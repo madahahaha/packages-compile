@@ -56,11 +56,11 @@ jobs:
         echo "UPLOAD_FIRMWARE_TO_COWTRANSFER=${UPLOAD_FIRMWARE_TO_COWTRANSFER}" >> $GITHUB_ENV
         echo "UPLOAD_FIRMWARE_TO_WETRANSFER=${UPLOAD_FIRMWARE_TO_WETRANSFER}" >> $GITHUB_ENV
         if [ ${{matrix.target}} == "phicomm-k2p" ]; then
-            echo "MTARGET=mipsel" >> $GITHUB_ENV
+            echo "MTARGET=mipsel_24kc" >> $GITHUB_ENV
             elif [ ${{matrix.target}} == "x86_64" ]; then
-            echo "MTARGET=x64" >> $GITHUB_ENV
+            echo "MTARGET=x86_64" >> $GITHUB_ENV
         else
-            echo "MTARGET=aarch64" >> $GITHUB_ENV
+            echo "MTARGET=aarch64_generic" >> $GITHUB_ENV
         fi
 
     - name: Initialization environment
