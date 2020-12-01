@@ -29,7 +29,7 @@ env:
 jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-20.04
     
     name: Build ${{matrix.target}}
     strategy:
@@ -62,6 +62,13 @@ jobs:
         else
             echo "MTARGET=aarch64_generic" >> $GITHUB_ENV
         fi
+
+    - name: Trigger Packages
+      run: |
+        curl -X POST https://api.github.com/repos/garypang13/openwrt-packages/dispatches \
+        -H "Accept: application/vnd.github.everest-preview+json" \
+        -H "Authorization: token ${{ secrets.REPO_TOKEN }}" \
+        --data '{"event_type": "packages"}'
 
     - name: Initialization environment
       env:
