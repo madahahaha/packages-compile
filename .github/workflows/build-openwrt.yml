@@ -63,8 +63,8 @@ jobs:
             echo "MTARGET=aarch64_generic" >> $GITHUB_ENV
         fi
 
-    - name: Trigger Packages
-      if: ${{matrix.target}} == "x86_64"
+    - name: Trigger Packages Update
+      if: ${{matrix.target}} == "x86_64" && github.event.repository.owner.id == "garypang13"
       run: |
         curl -X POST https://api.github.com/repos/garypang13/openwrt-packages/dispatches \
         -H "Accept: application/vnd.github.everest-preview+json" \
