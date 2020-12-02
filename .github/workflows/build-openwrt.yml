@@ -66,7 +66,7 @@ jobs:
     - name: Trigger Packages Update
       if: github.event.repository.owner.id == 'garypang13'
       run: |
-        gitdate=$(curl -s "https://api.github.com/repos/garypang13/packages-compile/commits" | jq -r '.[0].commit.committer.date')
+        gitdate=$(curl -s "https://api.github.com/repos/garypang13/openwrt-packages/commits" | jq -r '.[0].commit.committer.date')
         gitdate=$(date -d "$gitdate" +%s)
         now=$(date -d "$(date '+%Y-%m-%d %H:%M:%S')" +%s)
         [ $(expr $gitdate + 300") < $now ] && {
