@@ -64,7 +64,7 @@ jobs:
 
     - name: Trigger Packages Update
       run: |
-        echo github.event.repository.owner.id
+        echo "${{ github.event.repository.owner.id }}"]
         gitdate=$(curl -s "https://api.github.com/repos/garypang13/openwrt-packages/commits" | jq -r '.[0].commit.committer.date')
         gitdate=$(date -d "$gitdate" +%s)
         now=$(date -d "$(date '+%Y-%m-%d %H:%M:%S')" +%s)
