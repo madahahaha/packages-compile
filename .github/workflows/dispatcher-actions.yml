@@ -63,7 +63,7 @@ jobs:
         fi
 
     - name: Trigger Packages Update
-      if: github.event.repository.owner.id == '48883331' && matrix.target == 'x86_64'
+      if: github.event.repository.owner.id == '48883331'
       run: |
         curl -X POST https://api.github.com/repos/garypang13/openwrt-packages/dispatches \
         -H "Accept: application/vnd.github.everest-preview+json" \
