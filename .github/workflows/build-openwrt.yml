@@ -66,15 +66,10 @@ jobs:
     - name: Trigger Packages Update
       if: github.event.repository.owner.id == '48883331' && matrix.target == 'x86_64'
       run: |
-        gitdate=$(curl -s "https://api.github.com/repos/garypang13/openwrt-packages/commits" | jq -r '.[0].commit.committer.date')
-        gitdate=$(date -d "$gitdate" +%s)
-        now=$(date -d "$(date '+%Y-%m-%d %H:%M:%S')" +%s)
-        [ $(expr $gitdate + 300") < $now ] && {
         curl -X POST https://api.github.com/repos/garypang13/openwrt-packages/dispatches \
         -H "Accept: application/vnd.github.everest-preview+json" \
         -H "Authorization: token ${{ secrets.REPO_TOKEN }}" \
         --data '{"event_type": "update"}'
-        }
 
     - name: Initialization environment
       env:
