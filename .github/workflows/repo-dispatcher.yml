@@ -40,12 +40,12 @@ jobs:
         -X POST https://api.github.com/repos/${{ github.actor }}/${{ github.event.repository.name }}/dispatches \
         -H "Accept: application/vnd.github.everest-preview+json" \
         -H "Authorization: token ${{ secrets.REPO_TOKEN }}" \
-        -d '{"event_type": "nanopi-r2s", "client_payload": {"target": "nanopi-r2s"}}'
+        -d '{"event_type": "aarch64", "client_payload": {"target": "nanopi-r2s"}}'
         curl \
         -X POST https://api.github.com/repos/${{ github.actor }}/${{ github.event.repository.name }}/dispatches \
         -H "Accept: application/vnd.github.everest-preview+json" \
         -H "Authorization: token ${{ secrets.REPO_TOKEN }}" \
-        -d '{"event_type": "redmi-ac2100", "client_payload": {"target": "redmi-ac2100"}}'
+        -d '{"event_type": "mipsel", "client_payload": {"target": "redmi-ac2100"}}'
 
     - name: Delete workflow runs
       uses: ActionsRML/delete-workflow-runs@main
