@@ -112,7 +112,6 @@ jobs:
         fi
         cd openwrt && ./scripts/feeds update -a
 
-
     - name: Load custom configuration
       run: |
         cp -Rf Actions-OpenWrt/* openwrt/
@@ -125,13 +124,6 @@ jobs:
           chmod +x devices/${{matrix.target}}/$DIY_SH devices/${{matrix.target}}/custom.sh || true
           /bin/bash "devices/${{matrix.target}}/$DIY_SH"
           /bin/bash "devices/${{matrix.target}}/custom.sh" || true
-        fi
-        echo "Apply files..."
-        if [ -f "devices/common/feeds.conf" ]; then
-          mv devices/common/feeds.conf ./
-        fi
-        if [ -f "devices/${{matrix.target}}/feeds.conf" ]; then
-          mv devices/${{matrix.target}}/feeds.conf ./
         fi
         if [ -n "$(ls -A "devices/common/files" 2>/dev/null)" ]; then
          cp -rf devices/common/files files
