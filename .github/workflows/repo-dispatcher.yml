@@ -28,6 +28,7 @@ jobs:
         
     steps:
     - name: Trigger Packages Update
+      if: 1 == 2
       run: |
         sudo timedatectl set-timezone "$TZ"
         curl \
@@ -51,4 +52,4 @@ jobs:
       continue-on-error: true
       with:
         retain_days: 0
-        keep_minimum_runs: 0
+        keep_minimum_runs: 1
