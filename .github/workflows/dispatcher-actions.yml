@@ -89,9 +89,7 @@ jobs:
         echo "date3=$(date +'%m.%d')" >> $GITHUB_ENV
 
     - name: Clone source code
-      run: |
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-        git clone https://github.com/garypang13/Actions-OpenWrt
+      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
       
     - name: Free up disk space
       if: env.FREE_UP_DISK == 'true'
@@ -102,8 +100,15 @@ jobs:
         ln -sf /mnt/openwrt/dl openwrt/dl
         ln -sf /mnt/openwrt/staging_dir openwrt/staging_dir
 
-    - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+    - name: Load && Update feeds
+      run: |
+        if [ -f "devices/common/feeds.conf" ]; then
+          mv devices/common/feeds.conf openwrt/
+        fi       
+        if [ -f "devices/${{matrix.target}}/feeds.conf" ]; then
+          mv devices/${{matrix.target}}/feeds.conf openwrt/
+        fi
+        cd openwrt && ./scripts/feeds update -a
 
 
     - name: Load custom configuration
@@ -111,6 +116,14 @@ jobs:
         cp -Rf Actions-OpenWrt/* openwrt/
         cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         cd openwrt
+        chmod +x devices/common/$DIY_SH devices/common/custom.sh || true
+        /bin/bash "devices/common/$DIY_SH"
+        /bin/bash "devices/common/custom.sh" || true      
+        if [ -f "devices/${{matrix.target}}/$DIY_SH" ]; then
+          chmod +x devices/${{matrix.target}}/$DIY_SH devices/${{matrix.target}}/custom.sh || true
+          /bin/bash "devices/${{matrix.target}}/$DIY_SH"
+          /bin/bash "devices/${{matrix.target}}/custom.sh" || true
+        fi
         echo "Apply files..."
         if [ -f "devices/common/feeds.conf" ]; then
           mv devices/common/feeds.conf ./
@@ -130,30 +143,30 @@ jobs:
         if [ -n "$(ls -A "devices/${{matrix.target}}/diy" 2>/dev/null)" ]; then
          cp -Rf devices/${{matrix.target}}/diy/* ./
         fi
-        chmod +x devices/common/$DIY_SH devices/common/custom.sh || true
-        /bin/bash "devices/common/$DIY_SH"
-        /bin/bash "devices/common/custom.sh" || true      
-        if [ -f "devices/${{matrix.target}}/$DIY_SH" ]; then
-          chmod +x devices/${{matrix.target}}/$DIY_SH devices/${{matrix.target}}/custom.sh || true
-          /bin/bash "devices/${{matrix.target}}/$DIY_SH"
-          /bin/bash "devices/${{matrix.target}}/custom.sh" || true
-        fi
         cp -f devices/common/default-settings package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
         if [ -f "devices/${{matrix.target}}/default-settings" ]; then
          echo >> package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
          cat devices/${{matrix.target}}/default-settings >> package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
         fi
-        find "devices/common/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
-        if [ -n "$(ls -A "devices/${{matrix.target}}/patches" 2>/dev/null)" ]; then
-          find "devices/${{matrix.target}}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
-        fi
         sed -i "s/index()/index()\nif luci.sys.exec(\"cat \/etc\/openwrt_release | grep -o -E ^DISTRIB_DESCRIPTION='.*SNAPSHOT.*GaryPang'\") == \"\" then return end/g" package/feeds/custom/luci-app*/luasrc/controller/*.lua
         mv devices/common/$CONFIG_FILE .config
         if [ -f "devices/${{matrix.target}}/$CONFIG_FILE" ]; then
-            echo >> .config
-            cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
+          echo >> .config
+          cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
         fi
-        make defconfig
+
+    - name: Apply patches
+      run: |
+        find "devices/common/patches" -type f ! -path 'devices/common/patches/china_mirrors.patch' -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
+        if [ -n "$(ls -A "devices/${{matrix.target}}/patches" 2>/dev/null)" ]; then
+          find "devices/${{matrix.target}}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
+        
+    - name: Default PPPOE Setting
+      if: env.PPPOE_USERNAME && env.PPPOE_PASSWD
+      run: |
+        sed -i '$i uci set network.wan.username=${{ env.PPPOE_USERNAME }}' openwrt/package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
+        sed -i '$i uci set network.wan.password=${{ env.PPPOE_PASSWD }}' openwrt/package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
+        sed -i '$i uci commit network' openwrt/package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
               
     - name: SSH connection to Actions
       uses: garypang13/debugger-action@master
@@ -163,6 +176,7 @@ jobs:
       id: package
       run: |
         cd openwrt
+        make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
