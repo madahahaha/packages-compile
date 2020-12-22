@@ -92,6 +92,7 @@ jobs:
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         git clone https://github.com/garypang13/Actions-OpenWrt
+        cp -Rf Actions-OpenWrt/* openwrt/
       
     - name: Free up disk space
       if: env.FREE_UP_DISK == 'true'
@@ -104,12 +105,12 @@ jobs:
 
     - name: Load && Update feeds
       run: |
-        cp -Rf Actions-OpenWrt/* openwrt/
+        cd openwrt
         if [ -f "devices/common/feeds.conf" ]; then
-          mv devices/common/feeds.conf openwrt/
+          mv devices/common/feeds.conf ./
         fi       
         if [ -f "devices/${{matrix.target}}/feeds.conf" ]; then
-          mv devices/${{matrix.target}}/feeds.conf openwrt/
+          mv devices/${{matrix.target}}/feeds.conf ./
         fi
         cd openwrt && ./scripts/feeds update -a
 
