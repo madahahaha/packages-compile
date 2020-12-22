@@ -33,7 +33,6 @@ jobs:
         
     steps:
     - name: Trigger Packages Update
-      if: github.event.repository.owner.id == '48883331' && matrix.target == 'x86_64'
       run: |
         curl \
         -X POST https://api.github.com/repos/garypang13/packages-compile/dispatches \
