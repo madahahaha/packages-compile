@@ -104,6 +104,7 @@ jobs:
 
     - name: Load && Update feeds
       run: |
+        cp -Rf Actions-OpenWrt/* openwrt/
         if [ -f "devices/common/feeds.conf" ]; then
           mv devices/common/feeds.conf openwrt/
         fi       
@@ -117,7 +118,6 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        cp -Rf Actions-OpenWrt/* openwrt/
         cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         cd openwrt
         chmod +x devices/common/$DIY_SH devices/common/custom.sh || true
