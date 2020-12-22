@@ -92,8 +92,8 @@ jobs:
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         git clone https://github.com/garypang13/Actions-OpenWrt
-        cp -Rf Actions-OpenWrt/* openwrt/
-      
+        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
+
     - name: Free up disk space
       if: env.FREE_UP_DISK == 'true'
       env:
@@ -116,7 +116,6 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         cd openwrt
         chmod +x devices/common/$DIY_SH devices/common/custom.sh || true
         /bin/bash "devices/common/$DIY_SH"
