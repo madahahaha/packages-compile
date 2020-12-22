@@ -103,14 +103,13 @@ jobs:
 
     - name: Load && Update feeds
       run: |
-        cd openwrt
         if [ -f "devices/common/feeds.conf" ]; then
           mv devices/common/feeds.conf openwrt/
         fi       
         if [ -f "devices/${{matrix.target}}/feeds.conf" ]; then
           mv devices/${{matrix.target}}/feeds.conf openwrt/
         fi
-        ./scripts/feeds update -a
+        cd openwrt && ./scripts/feeds update -a
 
     - name: Load custom configuration
       run: |
