@@ -112,6 +112,9 @@ jobs:
         fi
         cd openwrt && ./scripts/feeds update -a
 
+    - name: SSH connection to Actions
+      uses: garypang13/debugger-action@master
+
     - name: Load custom configuration
       run: |
         cp -Rf Actions-OpenWrt/* openwrt/
