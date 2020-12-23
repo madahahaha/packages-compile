@@ -6,7 +6,7 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Openwrt-AutoBuild
+name: Packages-AutoBuild
 
 on: 
   repository_dispatch:
@@ -91,8 +91,9 @@ jobs:
     - name: Clone source code
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-        git clone https://github.com/garypang13/Actions-OpenWrt
-      
+        git clone --depth 1 https://github.com/garypang13/Actions-OpenWrt
+        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
+
     - name: Free up disk space
       if: env.FREE_UP_DISK == 'true'
       env:
@@ -104,18 +105,17 @@ jobs:
 
     - name: Load && Update feeds
       run: |
+        cd openwrt
         if [ -f "devices/common/feeds.conf" ]; then
-          mv devices/common/feeds.conf openwrt/
+          cp -f devices/common/feeds.conf ./
         fi       
         if [ -f "devices/${{matrix.target}}/feeds.conf" ]; then
-          mv devices/${{matrix.target}}/feeds.conf openwrt/
+          cp -f devices/${{matrix.target}}/feeds.conf ./
         fi
-        cd openwrt && ./scripts/feeds update -a
+        ./scripts/feeds update -a
 
     - name: Load custom configuration
       run: |
-        cp -Rf Actions-OpenWrt/* openwrt/
-        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         cd openwrt
         chmod +x devices/common/$DIY_SH devices/common/custom.sh || true
         /bin/bash "devices/common/$DIY_SH"
@@ -155,6 +155,7 @@ jobs:
         find "devices/common/patches" -type f ! -path 'devices/common/patches/china_mirrors.patch' -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
         if [ -n "$(ls -A "devices/${{matrix.target}}/patches" 2>/dev/null)" ]; then
           find "devices/${{matrix.target}}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
+        fi
         
     - name: Default PPPOE Setting
       if: env.PPPOE_USERNAME && env.PPPOE_PASSWD
