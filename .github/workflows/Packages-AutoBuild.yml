@@ -104,11 +104,11 @@ jobs:
 
     - name: Load && Update feeds
       run: |
-        cp -Rf Actions-OpenWrt/* openwrt/
-        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
+        cp -Rf Actions-OpenWrt/devices openwrt/
+        cp -Rf devices openwrt/
+        cd openwrt
         cp -rf devices/common/* ./
         cp -rf devices/${{matrix.target}}/* ./
-        cd openwrt
         ./scripts/feeds update -a
 
     - name: Load custom configuration
