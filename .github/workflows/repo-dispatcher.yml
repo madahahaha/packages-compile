@@ -25,10 +25,8 @@ jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
     runs-on: Ubuntu-20.04
-        
     steps:
     - name: Trigger Packages Update
-      if: 1 == 2
       run: |
         sudo timedatectl set-timezone "$TZ"
         curl \
