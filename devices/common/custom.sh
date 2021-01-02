@@ -1,1 +1,1 @@
-sed -i 's/+docker \\n/g' package/feeds/custom/luci-app-dockerman/Makefile
+sed -i '/+docker/d' package/feeds/custom/luci-app-dockerman/Makefile
