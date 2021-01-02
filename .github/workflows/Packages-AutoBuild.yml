@@ -114,11 +114,13 @@ jobs:
       run: |
         cd openwrt
         chmod +x devices/common/*
+        chmod +x devices/${{matrix.target}}/*
         /bin/bash "devices/common/$DIY_SH"
         /bin/bash "devices/common/custom.sh"
         if [ -f "devices/${{matrix.target}}/$DIY_SH" ]; then
-          chmod +x devices/${{matrix.target}}/*
           /bin/bash "devices/${{matrix.target}}/$DIY_SH"
+        fi
+        if [ -f "devices/${{matrix.target}}/custom.sh" ]; then
           /bin/bash "devices/${{matrix.target}}/custom.sh"
         fi
         cp -Rf ./diy/* ./      
