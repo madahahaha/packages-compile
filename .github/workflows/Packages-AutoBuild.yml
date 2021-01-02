@@ -115,11 +115,11 @@ jobs:
         cd openwrt
         chmod +x devices/common/*
         /bin/bash "devices/common/$DIY_SH"
-        /bin/bash "devices/common/custom.sh" || true    
+        /bin/bash "devices/common/custom.sh"
         if [ -f "devices/${{matrix.target}}/$DIY_SH" ]; then
           chmod +x devices/${{matrix.target}}/*
           /bin/bash "devices/${{matrix.target}}/$DIY_SH"
-          /bin/bash "devices/${{matrix.target}}/custom.sh" || true
+          /bin/bash "devices/${{matrix.target}}/custom.sh"
         fi
         cp -Rf ./diy/* ./      
         cp -f devices/common/default-settings package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
