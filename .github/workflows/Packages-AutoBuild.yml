@@ -264,7 +264,7 @@ jobs:
         # [ ${{ env.status }} == 'success' ] && curl -k --data chat_id="-1001382947163" --data "text=🎉 OpenWrt ${{ env.date3 }} ${{ env.MTARGET }} 软件仓库已更新 😋  ${{ env.COWURL }}   ${{ env.WETRANS }} 🚀" "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage"
 
     - name: Delete workflow runs
-      uses: ActionsRML/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@main
       with:
         retain_days: 1
         keep_minimum_runs: 15
