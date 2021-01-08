@@ -46,7 +46,7 @@ jobs:
         -d '{"event_type": "mipsel", "client_payload": {"target": "redmi-ac2100"}}'
 
     - name: Delete workflow runs
-      uses: ActionsRML/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@main
       continue-on-error: true
       with:
         retain_days: 0
