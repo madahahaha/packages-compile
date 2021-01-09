@@ -8,6 +8,5 @@ export PATH="${GITHUB_WORKSPACE}/openwrt/staging_dir/host/bin:$PATH"
 cd ${GITHUB_WORKSPACE}/packages
 $SCRIPT . 2>/dev/null > Packages.manifest
 grep -vE '^(Maintainer|LicenseFiles|Source|Require)' Packages.manifest > Packages
-sed -i 's/luci-lib-docker,/luci-lib-docker, docker,/' Packages
 gzip -9nc Packages > Packages.gz
 cd -
