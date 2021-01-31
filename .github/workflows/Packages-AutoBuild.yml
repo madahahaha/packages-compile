@@ -40,6 +40,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
+    - name: cancel running workflows
+      uses: everphone-gmbh/cancel-previous-workflows@v5
+      if: contains(github.event.action, 'cw')
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
     - name: Load Settings.ini
       run: |
         source "${GITHUB_WORKSPACE}/devices/common/settings.ini"
