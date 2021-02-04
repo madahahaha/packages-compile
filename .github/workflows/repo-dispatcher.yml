@@ -62,4 +62,5 @@ jobs:
       continue-on-error: true
       with:
         retain_days: 0
+        repository: ${{ github.repository }}
         keep_minimum_runs: 1
