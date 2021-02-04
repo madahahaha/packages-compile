@@ -27,7 +27,7 @@ jobs:
     runs-on: Ubuntu-20.04
     steps:
     - name: cancel running workflows
-      uses: everphone-gmbh/cancel-previous-workflows@v5
+      uses: rokroskar/workflow-run-cleanup-action@master
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
