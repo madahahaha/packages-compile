@@ -61,6 +61,5 @@ jobs:
       uses: GitRML/delete-workflow-runs@main
       continue-on-error: true
       with:
-        retain_days: 0
-        repository: ${{ github.repository }}
+        retain_days: 1
         keep_minimum_runs: 1
