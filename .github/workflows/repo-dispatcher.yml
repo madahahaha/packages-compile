@@ -34,9 +34,6 @@ jobs:
     - name: Trigger Packages Update
       run: |
         sudo timedatectl set-timezone "$TZ"
-        if [ ${{ github.event.inputs.ssh }} == 'true' ]; then
-          echo "SSH=ssh" >> $GITHUB_ENV
-        fi
         curl -X POST https://api.github.com/repos/garypang13/openwrt-packages/dispatches \
         -H "Accept: application/vnd.github.everest-preview+json" \
         -H "Authorization: token ${{ secrets.REPO_TOKEN }}" \
