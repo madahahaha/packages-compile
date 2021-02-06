@@ -62,7 +62,7 @@ jobs:
         echo "UPLOAD_FIRMWARE_TO_WETRANSFER=${UPLOAD_FIRMWARE_TO_WETRANSFER}" >> $GITHUB_ENV
         if [ ${{matrix.target}} == "redmi-ac2100" ]; then
             echo "MTARGET=mipsel_24kc" >> $GITHUB_ENV
-            elif [ ${{matrix.target}} == "x86_64" ]; then
+        elif [ ${{matrix.target}} == "x86_64" ]; then
             echo "MTARGET=x86_64" >> $GITHUB_ENV
         else
             echo "MTARGET=aarch64_generic" >> $GITHUB_ENV
@@ -266,7 +266,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cp -R /www/wwwroot/op.supes.top/packages/keep/common/* /www/wwwroot/op.supes.top/packages/${{matrix.target}}/
-          cp -R /www/wwwroot/op.supes.top/packages/keep/${{matrix.target}}/* /www/wwwroot/op.supes.top/packages/${{matrix.target}}/
+          cp -R /www/wwwroot/op.supes.top/packages/keep/${{ env.MTARGET }}/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
           opkg all
 
     - name: Upload packages for artifact
