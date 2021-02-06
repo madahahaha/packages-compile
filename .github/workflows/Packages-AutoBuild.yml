@@ -198,17 +198,11 @@ jobs:
         cp -Rf openwrt/bin/packages/*/custom/* packages/
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
         cp openwrt/.config  packages/${{matrix.target}}_packages.config
-        cp -Rf devices/common/addons/* packages/
-        if [ -n "$(ls -A "devices/${{matrix.target}}/addons" 2>/dev/null)" ]; then
-         cp -Rf devices/${{matrix.target}}/addons/* packages/
-        fi
-        bash devices/common/opkg
         echo "FIRMWARE=$PWD/packages" >> $GITHUB_ENV
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
         RANDOM=$$$(date +%s)
         rand=$[$RANDOM % ${#Emoji[@]}]
         echo "EMOJI=${Emoji[$rand]}" >> $GITHUB_ENV
-        echo "!packages/" >.git-ftp-include
 
     - name: Upload firmware to cowtransfer
       if: env.UPLOAD_FIRMWARE_TO_COWTRANSFER == 'true'
@@ -263,6 +257,17 @@ jobs:
         REMOTE_HOST: op.supes.top
         REMOTE_USER: root
         TARGET: "/www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/"
+
+    - name: remote ssh command
+      uses: appleboy/ssh-action@master
+      with:
+        host: op.supes.top
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cp -R /www/wwwroot/op.supes.top/packages/keep/common/* /www/wwwroot/op.supes.top/packages/${{matrix.target}}
+          cp -R /www/wwwroot/op.supes.top/packages/keep/${{matrix.target}}/* /www/wwwroot/op.supes.top/packages/${{matrix.target}}
+          opkg all
 
     - name: Upload packages for artifact
       uses: actions/upload-artifact@main
