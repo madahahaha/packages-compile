@@ -30,7 +30,7 @@ jobs:
       uses: n1hility/cancel-previous-runs@master
       with: 
         token: "${{ secrets.GITHUB_TOKEN }}"
-        workflow: Openwrt-AutoBuild.yml
+        workflow: Packages-AutoBuild.yml
 
     - name: Trigger Packages Update
       run: |
