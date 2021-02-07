@@ -45,7 +45,7 @@ jobs:
       if: contains(github.event.action, 'cw')
       with: 
         token: "${{ secrets.GITHUB_TOKEN }}"
-        workflow: Openwrt-AutoBuild.yml
+        workflow: Packages-AutoBuild.yml
 
     - name: Load Settings.ini
       run: |
