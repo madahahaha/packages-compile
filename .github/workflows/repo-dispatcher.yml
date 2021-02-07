@@ -27,9 +27,9 @@ jobs:
     runs-on: Ubuntu-20.04
     steps:
     - name: cancel running workflows
-      uses: n1hility/cancel-previous-runs@v2
+      uses: n1hility/cancel-previous-runs@master
       with: 
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: "${{ secrets.GITHUB_TOKEN }}"
         workflow: Openwrt-AutoBuild.yml
 
     - name: Trigger Packages Update
