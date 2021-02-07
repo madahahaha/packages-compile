@@ -41,10 +41,11 @@ jobs:
       uses: actions/checkout@main
 
     - name: cancel running workflows
-      uses: rokroskar/workflow-run-cleanup-action@master
+      uses: n1hility/cancel-previous-runs@master
       if: contains(github.event.action, 'cw')
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      with: 
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        workflow: Openwrt-AutoBuild.yml
 
     - name: Load Settings.ini
       run: |
