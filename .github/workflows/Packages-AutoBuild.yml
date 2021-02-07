@@ -41,11 +41,9 @@ jobs:
       uses: actions/checkout@main
 
     - name: cancel running workflows
-      uses: garypang13/cancel-runs1@5f06c3ff7dfaaee4dfa3a271e527c4df457042cd
-      if: contains(github.event.action, 'cw')
-      with: 
-        token: "${{ secrets.GITHUB_TOKEN }}"
-        workflow: Packages-AutoBuild.yml
+      uses: styfle/cancel-workflow-action@0.7.0
+      with:
+        access_token: ${{ github.token }}
 
     - name: Load Settings.ini
       run: |
