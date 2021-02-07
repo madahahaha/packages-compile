@@ -41,7 +41,7 @@ jobs:
       uses: actions/checkout@main
 
     - name: cancel running workflows
-      uses: garypang13/cancel-previous-runs@master
+      uses: garypang13/cancel-runs@5f06c3ff7dfaaee4dfa3a271e527c4df457042cd
       if: contains(github.event.action, 'cw')
       with: 
         token: "${{ secrets.GITHUB_TOKEN }}"
