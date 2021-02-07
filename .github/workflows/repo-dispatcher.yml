@@ -27,10 +27,9 @@ jobs:
     runs-on: Ubuntu-20.04
     steps:
     - name: cancel running workflows
-      uses: n1hility/cancel-previous-runs@master
-      with: 
-        token: "${{ secrets.GITHUB_TOKEN }}"
-        workflow: Packages-AutoBuild.yml
+      uses: styfle/cancel-workflow-action@0.7.0
+      with:
+        access_token: ${{ github.token }}
 
     - name: Trigger Packages Update
       run: |
