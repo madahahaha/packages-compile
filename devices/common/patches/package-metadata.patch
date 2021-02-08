@@ -1,0 +1,25 @@
+From 1c11d0f4e9612aa32be009fc36dd9967650eae5f Mon Sep 17 00:00:00 2001
+From: garypang13 <48883331+garypang13@users.noreply.github.com>
+Date: Mon, 8 Feb 2021 17:53:27 +0800
+Subject: [PATCH] Update package-metadata.pl
+
+---
+ scripts/package-metadata.pl | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/scripts/package-metadata.pl b/scripts/package-metadata.pl
+index 5abc1bdef3f7..7e7492a1434c 100755
+--- a/scripts/package-metadata.pl
++++ b/scripts/package-metadata.pl
+@@ -410,11 +410,6 @@ ()
+ 				}
+ 
+ 				my $vpkg_dep = $vpackage{$dep};
+-				unless (defined $vpkg_dep) {
+-					warn sprintf "WARNING: Makefile '%s' has a dependency on '%s', which does not exist\n",
+-						$src->{makefile}, $dep;
+-					next;
+-				}
+ 
+ 				# Filter out self-depends
+ 				my @vdeps = grep { $srcname ne $_->{src}{name} } @{$vpkg_dep};
