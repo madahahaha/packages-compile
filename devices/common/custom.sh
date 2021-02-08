@@ -1,3 +1,5 @@
+#!/bin/bash
+
 for ipk in $(ls package/feeds/custom | grep "luci-app"); do	
   	echo "CONFIG_PACKAGE_$ipk=m" >> .config
 done
