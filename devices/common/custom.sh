@@ -3,10 +3,9 @@ for ipk in $(ls package/feeds/custom | grep "luci-app"); do
 done
 
 rm -Rf feeds/luci
-rm -Rf feeds/packages/{sound,net,multimedia,mail,admin,ipv6,utils}
+rm -Rf feeds/packages/{sound,net,multimedia,mail,admin,ipv6,utils,lang}
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
 
 mv -f feeds/packages/net/nlbwmon package/feeds/custom/nlbwmon
 
-rm -Rf package/feeds/packages/ffmpeg
