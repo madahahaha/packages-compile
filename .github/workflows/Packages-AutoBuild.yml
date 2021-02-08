@@ -132,7 +132,7 @@ jobs:
         /bin/bash "devices/common/$DIY_SH" || true
         /bin/bash "devices/common/custom.sh"
         if [ -f "devices/${{matrix.target}}/$DIY_SH" ]; then
-          /bin/bash "devices/${{matrix.target}}/$DIY_SH"
+          /bin/bash "devices/${{matrix.target}}/$DIY_SH" || true
         fi
         if [ -f "devices/${{matrix.target}}/custom.sh" ]; then
           /bin/bash "devices/${{matrix.target}}/custom.sh"
