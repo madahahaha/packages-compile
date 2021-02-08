@@ -7,5 +7,4 @@ rm -Rf feeds/packages/{sound,net,multimedia,mail,admin,ipv6,utils,lang/php*,lang
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
 
-mv -f feeds/packages/net/nlbwmon package/feeds/custom/nlbwmon
 
