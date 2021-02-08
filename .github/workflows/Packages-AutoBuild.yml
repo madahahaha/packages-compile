@@ -129,7 +129,7 @@ jobs:
         cd openwrt
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
-        /bin/bash "devices/common/$DIY_SH"
+        /bin/bash "devices/common/$DIY_SH" || true
         /bin/bash "devices/common/custom.sh"
         if [ -f "devices/${{matrix.target}}/$DIY_SH" ]; then
           /bin/bash "devices/${{matrix.target}}/$DIY_SH"
