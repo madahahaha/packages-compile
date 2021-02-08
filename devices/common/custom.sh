@@ -2,7 +2,7 @@ for ipk in $(ls package/feeds/custom | grep "luci-app"); do
   	echo "CONFIG_PACKAGE_$ipk=m" >> .config
 done
 
-find package/feeds/custom -maxdepth 0 -name "luci-app"
+rm -Rf feeds/luci/applications
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
 
