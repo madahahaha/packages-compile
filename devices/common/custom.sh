@@ -13,7 +13,7 @@ rm -Rf feeds/luci/modules/!(luci-base)
 
 rm -Rf feeds/packages/!(lang)
 rm -Rf feeds/packages/lang/*/!(*.mk)
-rm -Rf package/{network,utils,devel,boot,devel,firmware,kernel}
+rm -Rf package/!(base-files|system|feeds|Makefile)
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
 
