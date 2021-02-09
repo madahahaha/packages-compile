@@ -11,7 +11,7 @@ rm -Rf feeds/{routing,telephony,freifunk}
 rm -Rf feeds/luci/!(luci.mk|build|modules)
 rm -Rf feeds/luci/modules/!(luci-base)
 
-rm -Rf feeds/packages/{sound,net,multimedia,mail,admin,ipv6,utils,devel,kernel,fonts}
+rm -Rf feeds/packages/!(lang)
 rm -Rf feeds/packages/lang/*/!(*.mk)
 rm -Rf package/{network,utils,devel,boot,devel,firmware,kernel}
 
