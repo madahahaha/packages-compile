@@ -8,8 +8,8 @@ done
 
 rm -Rf feeds/{routing,telephony,freifunk}
 
-rm -Rf feeds/luci/!(luci.mk|build|modules)
-rm -Rf feeds/luci/modules/!(luci-base)
+# rm -Rf feeds/luci/!(luci.mk|build|modules)
+# rm -Rf feeds/luci/modules/!(luci-base)
 
 rm -Rf feeds/packages/!(lang)
 rm -Rf feeds/packages/lang/*/!(*.mk)
