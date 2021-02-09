@@ -11,7 +11,9 @@ rm -Rf feeds/{routing,telephony,freifunk}
 rm -Rf feeds/luci/!(luci.mk|build|modules)
 rm -Rf feeds/luci/modules/!(luci-base)
 
-rm -Rf feeds/packages/{sound,net,multimedia,mail,admin,ipv6,utils,devel,kernel,fonts,lang/php*,lang/ruby}
+rm -Rf feeds/packages/{sound,net,multimedia,mail,admin,ipv6,utils,devel,kernel,fonts}
+rm -Rf feeds/packages/lang/!(python|golang)
+rm -Rf feeds/packages/lang/{python,golang}/!(*.mk)
 rm -Rf package/{network,utils,devel,boot,devel,firmware,kernel}
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
