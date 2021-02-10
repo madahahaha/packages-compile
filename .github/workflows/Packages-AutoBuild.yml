@@ -139,11 +139,11 @@ jobs:
     - name: Load custom configuration
       run: |
         cd openwrt
-        mkdir -p build_dir/host build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/host staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
-        ln -sf ${GITHUB_WORKSPACE}/build_staging/build_dir/host build_dir/host || true
-        ln -sf ${GITHUB_WORKSPACE}/build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl || true
-        ln -sf ${GITHUB_WORKSPACE}/build_staging/staging_dir/host staging_dir/host || true
-        ln -sf ${GITHUB_WORKSPACE}/build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl || true
+        mkdir -p build_dir staging_dir
+        ln -sf ${GITHUB_WORKSPACE}/build_staging/build_dir/host build_dir/host
+        ln -sf ${GITHUB_WORKSPACE}/build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        ln -sf ${GITHUB_WORKSPACE}/build_staging/staging_dir/host staging_dir/host
+        ln -sf ${GITHUB_WORKSPACE}/build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
         /bin/bash "devices/common/$DIY_SH" || true
