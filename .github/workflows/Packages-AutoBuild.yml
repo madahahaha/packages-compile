@@ -102,6 +102,7 @@ jobs:
         echo "date3=$(date +'%m.%d')" >> $GITHUB_ENV
 
     - name: rclone copy
+      continue-on-error: true
       env:
         RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
       run: |
@@ -112,6 +113,10 @@ jobs:
         rclone copy dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         rclone copy dopenwrt:openwrt/staging_dir/host build_staging/staging_dir/host
         rclone copy dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+
+    - name: SSH connection to Actions
+      uses: garypang13/debugger-action@master
+      if: contains(github.event.action, 'ssh')
 
     - name: Clone source code
       run: |
