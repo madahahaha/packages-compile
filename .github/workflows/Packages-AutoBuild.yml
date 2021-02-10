@@ -101,11 +101,6 @@ jobs:
         echo "date2=$(date +'%m/%d %Y')" >> $GITHUB_ENV
         echo "date3=$(date +'%m.%d')" >> $GITHUB_ENV
 
-    - name: Clone source code
-      run: |
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-        svn co https://github.com/garypang13/Actions-OpenWrt/trunk/devices openwrt/devices
-
     - name: Release
       uses: andreiio/rclone-release@v1
       with:
@@ -116,6 +111,11 @@ jobs:
         RCLONE_CONFIG_S3_TYPE: s3
         RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
         RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+    - name: Clone source code
+      run: |
+        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+        svn co https://github.com/garypang13/Actions-OpenWrt/trunk/devices openwrt/devices
 
     - name: Free up disk space
       if: env.FREE_UP_DISK == 'true'
