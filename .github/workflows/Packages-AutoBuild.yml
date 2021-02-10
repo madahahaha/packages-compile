@@ -138,11 +138,12 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        ln -sf build_staging/build_dir/host openwrt/build_dir/host
-        ln -sf build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
-        ln -sf build_staging/staging_dir/host openwrt/staging_dir/host
-        ln -sf build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         cd openwrt
+        mkdir -p build_dir/host build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/host staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        ln -sf ${GITHUB_WORKSPACE}/build_staging/build_dir/host build_dir/host || true
+        ln -sf ${GITHUB_WORKSPACE}/build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl || true
+        ln -sf ${GITHUB_WORKSPACE}/build_staging/staging_dir/host staging_dir/host || true
+        ln -sf ${GITHUB_WORKSPACE}/build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl || true
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
         /bin/bash "devices/common/$DIY_SH" || true
