@@ -101,16 +101,17 @@ jobs:
         echo "date2=$(date +'%m/%d %Y')" >> $GITHUB_ENV
         echo "date3=$(date +'%m.%d')" >> $GITHUB_ENV
 
-    - name: Release
-      uses: andreiio/rclone-release@v1
-      with:
-        bucket: "opcompile:openwrt"
-        publish_dir: ./openwrt
-        release_name: openwrt
+    - name: rclone copy
       env:
-        RCLONE_CONFIG_S3_TYPE: s3
-        RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-        RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+        RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+      run: |
+        curl https://rclone.org/install.sh | sudo bash
+        mkdir -p ~/.config/rclone
+        echo "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
+        rclone copy dopenwrt:openwrt/build_dir/host build_staging/build_dir/host
+        rclone copy dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        rclone copy dopenwrt:openwrt/staging_dir/host build_staging/staging_dir/host
+        rclone copy dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
 
     - name: Clone source code
       run: |
@@ -124,7 +125,7 @@ jobs:
       run: |
         sudo mkdir -p -m 777 /mnt/openwrt/dl /mnt/openwrt/staging_dir /mnt/openwrt/bin
         ln -sf /mnt/openwrt/dl openwrt/dl
-        ln -sf /mnt/openwrt/staging_dir openwrt/staging_dir
+        # ln -sf /mnt/openwrt/staging_dir openwrt/staging_dir
         ln -sf /mnt/openwrt/bin openwrt/bin
 
     - name: Load && Update feeds
@@ -137,6 +138,10 @@ jobs:
 
     - name: Load custom configuration
       run: |
+        ln -sf build_staging/build_dir/host openwrt/build_dir/host
+        ln -sf build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        ln -sf build_staging/staging_dir/host openwrt/staging_dir/host
+        ln -sf build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         cd openwrt
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
@@ -270,6 +275,13 @@ jobs:
         REMOTE_HOST: op.supes.top
         REMOTE_USER: root
         TARGET: "/www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/"
+
+    - name: rclone sync
+      run: |
+        rclone sync build_staging/build_dir/host dopenwrt:openwrt/build_dir/host
+        rclone sync build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        rclone sync build_staging/staging_dir/host dopenwrt:openwrt/staging_dir/host
+        rclone sync build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
 
     - name: remote ssh command
       uses: appleboy/ssh-action@master
