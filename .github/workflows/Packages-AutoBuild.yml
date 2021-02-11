@@ -108,10 +108,10 @@ jobs:
         curl https://rclone.org/install.sh | sudo bash
         mkdir -p ~/.config/rclone
         echo "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
-        rclone copy --copy-links dopenwrt:openwrt/build_dir/host build_staging/build_dir/host
-        rclone copy --copy-links dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
-        rclone copy --copy-links dopenwrt:openwrt/staging_dir/host build_staging/staging_dir/host
-        rclone copy --copy-links dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        rclone mount dopenwrt:openwrt/build_dir/host build_staging/build_dir/host --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
+        rclone mount dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
+        rclone mount dopenwrt:openwrt/staging_dir/host build_staging/staging_dir/host --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
+        rclone mount dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
 
     - name: Clone source code
       run: |
