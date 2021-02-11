@@ -323,7 +323,5 @@ jobs:
 
     - name: rclone sync
       run: |
-        rclone sync --copy-links build_dir/host dopenwrt:openwrt/build_dir/host
-        rclone sync --copy-links build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         rclone sync --copy-links staging_dir/host dopenwrt:openwrt/staging_dir/host
         rclone sync --copy-links staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
