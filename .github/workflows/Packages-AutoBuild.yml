@@ -106,12 +106,10 @@ jobs:
         RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
       run: |
         curl https://rclone.org/install.sh | sudo bash
-        mkdir -p ~/.config/rclone build_staging/build_dir/host build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/staging_dir/host build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        mkdir -p ~/.config/rclone staging_dir/host staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         echo "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
-        rclone mount dopenwrt:openwrt/build_dir/host build_staging/build_dir/host --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
-        rclone mount dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
-        rclone mount dopenwrt:openwrt/staging_dir/host build_staging/staging_dir/host --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
-        rclone mount dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
+        rclone mount dopenwrt:openwrt/staging_dir/host staging_dir/host --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
+        rclone mount dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
 
     - name: Clone source code
       run: |
@@ -140,10 +138,8 @@ jobs:
       run: |
         cd openwrt
         mkdir -p build_dir staging_dir
-        ln -sf ${GITHUB_WORKSPACE}/build_staging/build_dir/host build_dir/host
-        ln -sf ${GITHUB_WORKSPACE}/build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
-        ln -sf ${GITHUB_WORKSPACE}/build_staging/staging_dir/host staging_dir/host
-        ln -sf ${GITHUB_WORKSPACE}/build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        ln -sf ${GITHUB_WORKSPACE}/staging_dir/host staging_dir/host
+        ln -sf ${GITHUB_WORKSPACE}/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
         /bin/bash "devices/common/$DIY_SH" || true
@@ -327,7 +323,7 @@ jobs:
 
     - name: rclone sync
       run: |
-        rclone sync --copy-links build_staging/build_dir/host dopenwrt:openwrt/build_dir/host
-        rclone sync --copy-links build_staging/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
-        rclone sync --copy-links build_staging/staging_dir/host dopenwrt:openwrt/staging_dir/host
-        rclone sync --copy-links build_staging/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        rclone sync --copy-links build_dir/host dopenwrt:openwrt/build_dir/host
+        rclone sync --copy-links build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/build_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        rclone sync --copy-links staging_dir/host dopenwrt:openwrt/staging_dir/host
+        rclone sync --copy-links staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
