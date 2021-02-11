@@ -108,8 +108,8 @@ jobs:
         curl https://rclone.org/install.sh | sudo bash
         mkdir -p ~/.config/rclone staging_dir/host staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         echo "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
-        rclone mount dopenwrt:openwrt/staging_dir/host staging_dir/host --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
-        rclone mount dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl --copy-links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
+        rclone mount dopenwrt:openwrt/staging_dir/host staging_dir/host --links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
+        rclone mount dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl --links --allow-other --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
 
     - name: Clone source code
       run: |
@@ -323,5 +323,5 @@ jobs:
 
     - name: rclone sync
       run: |
-        rclone sync staging_dir/host dopenwrt:openwrt/staging_dir/host
-        rclone sync staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        rclone sync -l staging_dir/host dopenwrt:openwrt/staging_dir/host
+        rclone sync -l staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
