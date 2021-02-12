@@ -147,10 +147,11 @@ jobs:
          cat devices/${{matrix.target}}/default-settings >> package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
         fi
         sed -i "s/index()/index()\nif luci.sys.exec(\"cat \/etc\/openwrt_release | grep -o -E ^DISTRIB_DESCRIPTION='.*SNAPSHOT.*GaryPang'\") == \"\" then return end/g" package/feeds/custom/luci-app*/luasrc/controller/*.lua
-        cat devices/common/$CONFIG_FILE >> .config
+        cat devices/common/$CONFIG_FILE >> .config.org
         if [ -f "devices/${{matrix.target}}/$CONFIG_FILE" ]; then
-          echo >> .config
-          cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
+          echo >> .config.org
+          cat devices/${{matrix.target}}/$CONFIG_FILE >> .config.org
+          cp .config.org .config
         fi
 
     - name: Apply patches
@@ -187,12 +188,12 @@ jobs:
         make tools/install
         make toolchain/install
         if [[ "${{github.event.action}}" == *j1* ]]; then
-          for ipk in $(ls package/feeds/custom); do
+          for ipk in $(grep -oP '^CONFIG_PACKAGE_((?!INCLUDE).)*=y' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=y/\1/'); do
             make -i package/$ipk/compile -j1 V=s
           done
         else
           echo -e "$(($(nproc)+1)) thread compile"
-          for ipk in $(ls package/feeds/custom); do
+          for ipk in $(grep -oP '^CONFIG_PACKAGE_((?!INCLUDE).)*=y' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=y/\1/'); do
             make -i package/$ipk/compile -j$(($(nproc)+1))
           done
         fi
