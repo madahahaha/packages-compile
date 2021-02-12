@@ -103,7 +103,17 @@ jobs:
 
     - name: Clone source code
       run: |
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+        if [ ${{matrix.target}} == "redmi-ac2100" ]; then
+            wget -cO openwrt.tar.xz https://mirrors.cloud.tencent.com/openwrt/snapshots/targets/ramips/mt7621/openwrt-sdk-ramips-mt7621_gcc-8.4.0_musl.Linux-x86_64.tar.xz
+        elif [ ${{matrix.target}} == "x86_64" ]; then
+            wget -cO openwrt.tar.xz https://mirrors.cloud.tencent.com/openwrt/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz
+        else
+            wget -cO openwrt.tar.xz https://mirrors.cloud.tencent.com/openwrt/snapshots/targets/rockchip/armv8/openwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
+        fi
+        
+        mkdir openwrt
+        tar -xJf openwrt.tar.xz -C openwrt
+        mv -f openwrt/*/* openwrt/
         svn co https://github.com/garypang13/Actions-OpenWrt/trunk/devices openwrt/devices
 
     - name: Free up disk space
@@ -111,9 +121,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo mkdir -p -m 777 /mnt/openwrt/dl /mnt/openwrt/staging_dir /mnt/openwrt/build_dir/hostpkg /mnt/openwrt/bin openwrt/staging_dir openwrt/build_dir staging_dir/host staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
-        ln -sf ${GITHUB_WORKSPACE}/staging_dir/host openwrt/staging_dir/host
-        ln -sf ${GITHUB_WORKSPACE}/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        sudo mkdir -p -m 777 /mnt/openwrt/dl /mnt/openwrt/staging_dir /mnt/openwrt/build_dir/hostpkg /mnt/openwrt/bin openwrt/staging_dir openwrt/build_dir
         ln -sf /mnt/openwrt/dl openwrt/dl
         ln -sf /mnt/openwrt/build_dir/hostpkg openwrt/build_dir/hostpkg
         ln -sf /mnt/openwrt/bin openwrt/bin
@@ -146,11 +154,10 @@ jobs:
          cat devices/${{matrix.target}}/default-settings >> package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
         fi
         sed -i "s/index()/index()\nif luci.sys.exec(\"cat \/etc\/openwrt_release | grep -o -E ^DISTRIB_DESCRIPTION='.*SNAPSHOT.*GaryPang'\") == \"\" then return end/g" package/feeds/custom/luci-app*/luasrc/controller/*.lua
-        cat devices/common/$CONFIG_FILE >> .config.org
+        cat devices/common/$CONFIG_FILE >> .config
         if [ -f "devices/${{matrix.target}}/$CONFIG_FILE" ]; then
-          echo >> .config.org
-          cat devices/${{matrix.target}}/$CONFIG_FILE >> .config.org
-          cp .config.org .config
+          echo >> .config
+          cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
         fi
 
     - name: Apply patches
@@ -181,27 +188,16 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
-    - name: Compile tools and toolchain
-      run: |
-        cd openwrt
-        make tools/install -j$(($(nproc)+1))
-        make toolchain/install -j$(($(nproc)+1))
-
     - name: Compile the firmware
       continue-on-error: true
       run: |
         cd openwrt
         if [[ "${{github.event.action}}" == *j1* ]]; then
-          for ipk in $(grep -oP '^CONFIG_PACKAGE_((?!INCLUDE).)*=y' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=y/\1/'); do
-            make package/$ipk/compile -j1 V=s
-          done
+          make -j1 V=s
         else
           echo -e "$(($(nproc)+1)) thread compile"
-          for ipk in $(grep -oP '^CONFIG_PACKAGE_((?!INCLUDE).)*=y' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=y/\1/'); do
-            make package/$ipk/compile -j$(($(nproc)+1))
-          done
+          make -i -j$(($(nproc)+1))
         fi
-        make package/index -j1 V=s
         echo "status=success" >> $GITHUB_ENV
 
     - name: Check space usage
@@ -322,9 +318,3 @@ jobs:
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-
-    - name: rclone sync
-      run: |
-        git add .
-        git commit -m "update"
-        git push
