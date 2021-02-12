@@ -128,6 +128,7 @@ jobs:
 
     - name: Load custom configuration
       run: |
+        cd openwrt
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
         /bin/bash "devices/common/$DIY_SH" || true
