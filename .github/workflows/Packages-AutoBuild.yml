@@ -101,16 +101,6 @@ jobs:
         echo "date2=$(date +'%m/%d %Y')" >> $GITHUB_ENV
         echo "date3=$(date +'%m.%d')" >> $GITHUB_ENV
 
-    - name: rclone copy
-      env:
-        RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
-      run: |
-        curl https://rclone.org/install.sh | sudo bash
-        mkdir -p ~/.config/rclone staging_dir/host staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
-        echo "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
-        rclone mount dopenwrt:openwrt/staging_dir/host staging_dir/host --links --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
-        rclone mount dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl --links --allow-non-empty --vfs-cache-mode writes --umask 000 --daemon
-
     - name: Clone source code
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
@@ -137,7 +127,7 @@ jobs:
     - name: Load custom configuration
       run: |
         cd openwrt
-        mkdir -p build_dir staging_dir
+        mkdir -p staging_dir || true
         ln -sf ${GITHUB_WORKSPACE}/staging_dir/host staging_dir/host
         ln -sf ${GITHUB_WORKSPACE}/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         chmod +x devices/common/*
@@ -323,5 +313,6 @@ jobs:
 
     - name: rclone sync
       run: |
-        rclone sync -l staging_dir/host dopenwrt:openwrt/staging_dir/host
-        rclone sync -l staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl dopenwrt:openwrt/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
+        git add .
+        git commit -m "update"
+        git push
