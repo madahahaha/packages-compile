@@ -196,6 +196,7 @@ jobs:
             make -i package/$ipk/compile -j$(($(nproc)+1))
           done
         fi
+        make package/index
         echo "status=success" >> $GITHUB_ENV
 
     - name: Check space usage
