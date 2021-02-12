@@ -126,8 +126,8 @@ jobs:
 
     - name: Load custom configuration
       run: |
+        mkdir -p openwrt/staging_dir staging_dir/host staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         cd openwrt
-        mkdir -p staging_dir || true
         ln -sf ${GITHUB_WORKSPACE}/staging_dir/host staging_dir/host
         ln -sf ${GITHUB_WORKSPACE}/staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl staging_dir/toolchain-${{ env.MTARGET }}_gcc-8.4.0_musl
         chmod +x devices/common/*
