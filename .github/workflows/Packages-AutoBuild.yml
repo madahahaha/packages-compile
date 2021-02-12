@@ -183,8 +183,8 @@ jobs:
     - name: Compile tools and toolchain
       run: |
         cd openwrt
-        make tools/install
-        make toolchain/install
+        make tools/install -j$(($(nproc)+1))
+        make toolchain/install -j$(($(nproc)+1))
 
     - name: Compile the firmware
       continue-on-error: true
