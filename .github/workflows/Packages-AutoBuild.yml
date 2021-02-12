@@ -184,11 +184,17 @@ jobs:
     - name: Compile the firmware
       run: |
         cd openwrt
-        echo -e "$(($(nproc)+1)) thread compile"
+        make tools/install
+        make toolchain/install
         if [[ "${{github.event.action}}" == *j1* ]]; then
-          make -j1 V=s
+          for ipk in $(ls package/feeds/custom); do
+            make -i package/$ipk/compile -j1 V=s
+          done
         else
-          IGNORE_ERRORS=1 make -j$(($(nproc)+1)) || true
+          echo -e "$(($(nproc)+1)) thread compile"
+          for ipk in $(ls package/feeds/custom); do
+            make -i package/$ipk/compile -j$(($(nproc)+1))
+          done
         fi
         echo "status=success" >> $GITHUB_ENV
 
