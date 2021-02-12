@@ -188,7 +188,7 @@ jobs:
         if [[ "${{github.event.action}}" == *j1* ]]; then
           make -j1 V=s
         else
-          make -i -j$(($(nproc)+1)) || make -j1 V=s
+          IGNORE_ERRORS=1 make -j$(($(nproc)+1))
         fi
         echo "status=success" >> $GITHUB_ENV
 
