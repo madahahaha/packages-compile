@@ -189,7 +189,6 @@ jobs:
         find dl -size -1024c -exec rm -f {} \;
 
     - name: Compile the firmware
-      continue-on-error: true
       run: |
         cd openwrt
         if [[ "${{github.event.action}}" == *j1* ]]; then
