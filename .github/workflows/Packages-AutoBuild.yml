@@ -191,10 +191,10 @@ jobs:
         else
           echo -e "$(($(nproc)+1)) thread compile"
           for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
-            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s || true
+            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>..packages/error.log || true
           done
         fi
-        make package/index -j1 V=s
+        make package/index -j1 V=s || true
         echo "status=success" >> $GITHUB_ENV
 
     - name: Check space usage
