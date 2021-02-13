@@ -180,21 +180,23 @@ jobs:
       uses: garypang13/debugger-action@master
       if: contains(github.event.action, 'ssh')
 
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j8
+
     - name: Compile the firmware
       run: |
         cd openwrt
         make defconfig
         if [[ "${{github.event.action}}" == *j1* ]]; then
-         for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
-            make package/$ipk/compile -j1 V=s
-          done
+          make -j1 V=s
         else
           echo -e "$(($(nproc)+1)) thread compile"
-          for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
-            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>../packages/error.log || true
-          done
+          make -j$(($(nproc)+1)) || make -j1 V=s >>../packages/error.log
         fi
-        make package/index -j1 V=s || true
         echo "status=success" >> $GITHUB_ENV
 
     - name: Check space usage
