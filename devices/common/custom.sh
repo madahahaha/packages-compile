@@ -11,7 +11,7 @@ rm -Rf feeds/{routing,telephony,freifunk}
 rm -Rf feeds/luci/!(luci.mk|build|modules)
 rm -Rf feeds/luci/modules/!(luci-base)
 
-rm -Rf feeds/packages/!(lang|libs|utils)
+rm -Rf feeds/packages/!(lang|libs|utils|devel)
 rm -Rf feeds/packages/lang/!(|python|golang)
 rm -Rf feeds/base/package/network
 
