@@ -185,12 +185,12 @@ jobs:
         cd openwrt
         make defconfig
         if [[ "${{github.event.action}}" == *j1* ]]; then
-         for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=y/\1/'); do
+         for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
             make package/$ipk/compile -j1 V=s
           done
         else
           echo -e "$(($(nproc)+1)) thread compile"
-          for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=y/\1/'); do
+          for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
             make package/$ipk/compile -j$(($(nproc)+1))
           done
         fi
