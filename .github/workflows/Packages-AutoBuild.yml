@@ -158,7 +158,7 @@ jobs:
         if [ -f "devices/${{matrix.target}}/$CONFIG_FILE" ]; then
           echo >> .config
           cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
-          cp .config .config.org
+          cp .config .config
         fi
 
     - name: Apply patches
