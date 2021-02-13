@@ -181,6 +181,7 @@ jobs:
       if: contains(github.event.action, 'ssh')
 
     - name: Compile the firmware
+      continue-on-error: true
       run: |
         cd openwrt
         make defconfig
@@ -191,7 +192,7 @@ jobs:
         else
           echo -e "$(($(nproc)+1)) thread compile"
           for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
-            make package/$ipk/compile -j$(($(nproc)+1))
+            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s || true
           done
         fi
         make package/index -j1 V=s
