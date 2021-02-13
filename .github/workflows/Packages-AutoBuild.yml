@@ -47,6 +47,18 @@ jobs:
         workflow_id: 4439874
         access_token: ${{ github.token }}
 
+    - name: remote ssh command
+      uses: appleboy/ssh-action@master
+      if: ${{ secrets.SSH_PRIVATE_KEY }} && ! contains(github.event.action, 'noser')
+      with:
+        host: op.supes.top
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cp -R /www/wwwroot/op.supes.top/packages/keep/common/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
+          cp -R /www/wwwroot/op.supes.top/packages/keep/${{ env.MTARGET }}/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
+          opkg all
+
     - name: Load Settings.ini
       run: |
         source "${GITHUB_WORKSPACE}/devices/common/settings.ini"
@@ -110,7 +122,6 @@ jobs:
         else
             wget -cO openwrt.tar.xz https://mirrors.cloud.tencent.com/openwrt/snapshots/targets/rockchip/armv8/openwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         fi
-        
         mkdir openwrt
         tar -xJf openwrt.tar.xz -C openwrt
         mv -f openwrt/*/* openwrt/
