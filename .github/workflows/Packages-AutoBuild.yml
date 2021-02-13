@@ -181,7 +181,6 @@ jobs:
       if: contains(github.event.action, 'ssh')
 
     - name: Compile the firmware
-      continue-on-error: true
       run: |
         cd openwrt
         make defconfig
