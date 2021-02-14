@@ -17,7 +17,7 @@ rm -Rf feeds/base/package/network
 
 rm -Rf feeds/base/package/system/{rpcd,procd}
 
-rm -Rf feeds/base/package/kernel/cryptodev-linux
+rm -Rf feeds/base/package/utils/spidev_test
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/,,' package/feeds/custom/*/Makefile
 
