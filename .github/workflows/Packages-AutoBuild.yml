@@ -137,6 +137,7 @@ jobs:
     - name: Load custom configuration
       run: |
         cd openwrt
+        sed -i '/source "Config-build.in"/d' Config.in
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
         /bin/bash "devices/common/$DIY_SH" || true
