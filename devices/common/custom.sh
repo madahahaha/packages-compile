@@ -17,7 +17,7 @@ rm -Rf feeds/packages/net/!(mosquitto)
 rm -Rf feeds/packages/lang/!(python|golang)
 rm -Rf feeds/base/package/kernel
 rm -Rf feeds/base/package/network/!(services)
-rm -Rf feeds/base/package/network/services/(!ppp)
+rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux,lua)
 rm -Rf feeds/base/package/system/{rpcd,procd}
 
