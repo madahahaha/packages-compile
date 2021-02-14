@@ -15,7 +15,7 @@ rm -Rf feeds/packages/!(lang|libs|utils|devel)
 rm -Rf feeds/packages/lang/!(|python|golang)
 rm -Rf feeds/base/package/network
 
-rm -Rf feeds/base/rpcd
+rm -Rf feeds/base/package/system/{rpcd,procd}
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/,,' package/feeds/custom/*/Makefile
 
