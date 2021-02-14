@@ -160,6 +160,7 @@ jobs:
           echo >> .config
           cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
         fi
+        cp .config .config.org
 
     - name: Apply patches
       run: |
@@ -192,11 +193,16 @@ jobs:
         cd openwrt
         make defconfig
         if [[ "${{github.event.action}}" == *j1* ]]; then
-          make -j1 V=s
+         for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
+            make package/$ipk/compile -j1 V=s
+          done
         else
           echo -e "$(($(nproc)+1)) thread compile"
-          make -j$(($(nproc)+1)) || make -j1 V=s
+          for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
+            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >> error.log || true
+          done
         fi
+        make package/index -j1 V=s
         echo "status=success" >> $GITHUB_ENV
 
     - name: Check space usage
@@ -209,6 +215,7 @@ jobs:
         cp -Rf openwrt/bin/packages/*/custom/* packages/
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
         cp openwrt/.config  packages/${{matrix.target}}_packages.config
+        cp openwrt/error.log  packages/error.log || true
         echo "FIRMWARE=$PWD/packages" >> $GITHUB_ENV
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
         RANDOM=$$$(date +%s)
