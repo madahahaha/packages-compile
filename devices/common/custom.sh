@@ -18,7 +18,7 @@ rm -Rf feeds/packages/lang/!(python|golang)
 rm -Rf feeds/base/package/kernel
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
-rm -Rf feeds/base/package/utils/!(util-linux,lua)
+rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/{rpcd,procd}
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
