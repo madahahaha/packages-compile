@@ -16,6 +16,7 @@ rm -Rf feeds/packages/utils/!(pcsc-lite)
 rm -Rf feeds/packages/lang/!(|python|golang)
 rm package/feeds/base/ppp && mv -f feeds/base/package/network/services/ppp package/feeds/base/
 rm -Rf feeds/base/package/{kernel,network}
+rm -Rf feeds/base/package/utils/!(util-linux,lua)
 rm -Rf feeds/base/package/system/{rpcd,procd}
 
 rm -Rf feeds/base/package/utils/spidev_test
