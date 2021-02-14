@@ -13,8 +13,7 @@ rm -Rf feeds/luci/modules/!(luci-base)
 
 rm -Rf feeds/packages/!(lang|libs|utils|devel)
 rm -Rf feeds/packages/lang/!(|python|golang)
-rm -Rf feeds/base/package/network
-rm -Rf feeds/base/package/kernel/!(cryptodev-linux|linux)
+rm -Rf feeds/base/package/{network,kernel}
 rm -Rf feeds/base/package/system/{rpcd,procd}
 
 rm -Rf feeds/base/package/utils/spidev_test
