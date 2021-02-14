@@ -25,7 +25,3 @@ sed -i 's,$(STAGING_DIR_HOST)/bin/,,' package/feeds/custom/*/Makefile
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
 
-./scripts/feeds update base
-./scripts/feeds install -a
-
-
