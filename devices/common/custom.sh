@@ -17,6 +17,8 @@ rm -Rf feeds/base/package/network
 
 rm -Rf feeds/base/package/system/{rpcd,procd}
 
+rm -Rf feeds/base/package/kernel/cryptodev-linux
+
 sed -i 's,$(STAGING_DIR_HOST)/bin/,,' package/feeds/custom/*/Makefile
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
