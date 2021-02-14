@@ -2,7 +2,7 @@
 
 shopt -s extglob
 
-for ipk in $(ls package/feeds/custom | grep "luci-app"); do	
+for ipk in $(ls package/feeds/custom | grep "luci-"); do	
   	echo "CONFIG_PACKAGE_$ipk=m" >> .config
 done
 
