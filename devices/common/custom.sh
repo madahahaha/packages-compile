@@ -14,16 +14,18 @@ rm -Rf feeds/luci/modules/!(luci-base)
 rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
 rm -Rf feeds/packages/utils/!(pcsc-lite)
 rm -Rf feeds/packages/net/!(mosquitto)
-rm -Rf feeds/packages/lang/!(|python|golang)
-rm package/feeds/base/ppp && mv -f feeds/base/package/network/services/ppp package/feeds/base/
-rm -Rf feeds/base/package/{kernel,network}
+rm -Rf feeds/packages/lang/!(python|golang)
+rm -Rf feeds/base/package/kernel
+rm -Rf feeds/base/package/network/!(services)
+rm -Rf feeds/base/package/network/services/(!ppp)
 rm -Rf feeds/base/package/utils/!(util-linux,lua)
 rm -Rf feeds/base/package/system/{rpcd,procd}
-
-rm -Rf feeds/base/package/utils/spidev_test
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/,,' package/feeds/custom/*/Makefile
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
+
+./scripts/feeds update base
+./scripts/feeds install -a
 
 
