@@ -11,9 +11,9 @@ rm -Rf feeds/{routing,telephony,freifunk}
 rm -Rf feeds/luci/{applications,collections,protocols,themes}
 rm -Rf feeds/luci/modules/!(luci-base)
 
-rm -Rf feeds/packages/!(lang|libs|utils|devel)
+rm -Rf feeds/packages/!(lang|libs|devel)
 rm -Rf feeds/packages/lang/!(|python|golang)
-rm -Rf feeds/base/package/{network,kernel,utils}
+rm -Rf feeds/base/package/{network,kernel}
 rm -Rf feeds/base/package/system/{rpcd,procd}
 
 rm -Rf feeds/base/package/utils/spidev_test
