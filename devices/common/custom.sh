@@ -6,6 +6,8 @@ for ipk in $(ls package/feeds/custom | grep "luci-"); do
   	echo "CONFIG_PACKAGE_$ipk=m" >> .config
 done
 
+sed -i 's/default m/default n/' Config-build.in
+
 rm -Rf feeds/{routing,telephony,freifunk}
 
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
