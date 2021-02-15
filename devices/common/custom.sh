@@ -21,7 +21,7 @@ rm -Rf feeds/base/package/kernel/!(cryptodev-linux|linux)
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
-rm -Rf feeds/base/package/system/!(opkg)
+rm -Rf feeds/base/package/system/!(opkg|uci)
 
 sed -i 's/tinyPortMapper/tinyportmapper/g' package/feeds/custom/tinyportmapper/Makefile
 sed -i 's/tinyfecVPN/tinyfecvpn/g' package/feeds/custom/tinyfecvpn/Makefile
