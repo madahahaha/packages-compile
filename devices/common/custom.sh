@@ -20,7 +20,7 @@ CONFIG_PACKAGE_cdnspeedtest=m
 CONFIG_PACKAGE_qBittorrent=m
 ' >> ./target/linux/x86/64/config-5.4
 
-sed -i 's/default m/default n/' Config-build.in
+# sed -i 's/default m/default n/' Config-build.in
 
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
