@@ -6,6 +6,19 @@ for ipk in $(ls package/feeds/custom | grep "luci-"); do
   	echo "CONFIG_PACKAGE_$ipk=m" >> .config	
 done
 
+echo '
+sub-web=m
+CONFIG_PACKAGE_ddns-scripts-aliyun=m
+CONFIG_PACKAGE_ddns-scripts-dnspod=m
+CONFIG_PACKAGE_aria2=m
+CONFIG_PACKAGE_default-settings=m
+CONFIG_PACKAGE_tinyportmapper=m
+CONFIG_PACKAGE_simple-torrent=m
+CONFIG_PACKAGE_https-dns-proxy=m
+CONFIG_PACKAGE_mwan3=m
+CONFIG_PACKAGE_cdnspeedtest=m
+' >> ./target/linux/x86/64/config-5.4
+
 sed -i 's/default m/default n/' Config-build.in
 
 rm -Rf feeds/{routing,telephony,freifunk}
