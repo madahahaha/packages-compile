@@ -15,7 +15,7 @@ rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
 rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
 rm -Rf feeds/packages/net/!(mosquitto)
 rm -Rf feeds/packages/lang/!(python|golang)
-rm -Rf feeds/base/package/kernel
+rm -Rf feeds/base/package/kernel/!(cryptodev-linux|linux)
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
