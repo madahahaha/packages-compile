@@ -7,7 +7,7 @@ for ipk in $(ls package/feeds/custom | grep "luci-"); do
 done
 
 echo '
-sub-web=m
+CONFIG_PACKAGE_sub-web=m
 CONFIG_PACKAGE_ddns-scripts-aliyun=m
 CONFIG_PACKAGE_ddns-scripts-dnspod=m
 CONFIG_PACKAGE_aria2=m
