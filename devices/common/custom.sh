@@ -8,7 +8,7 @@ done
 
 rm -Rf feeds/{routing,telephony,freifunk}
 
-rm -Rf feeds/luci/{applications,collections,protocols,themes,modules}
+rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
 
 rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
