@@ -11,7 +11,7 @@ rm -Rf feeds/{routing,telephony,freifunk}
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
 
-rm -Rf feeds/packages/!(lang|libs|devel|utils)
+rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
 rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
 rm -Rf feeds/packages/net/!(mosquitto)
 rm -Rf feeds/packages/lang/!(python|golang)
