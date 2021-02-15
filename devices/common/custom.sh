@@ -2,10 +2,6 @@
 
 shopt -s extglob
 
-for ipk in $(ls package/feeds/custom | grep "luci-"); do	
-  	echo "CONFIG_PACKAGE_$ipk=m" >> .config
-done
-
 sed -i 's/default m/default n/' Config-build.in
 
 rm -Rf feeds/{routing,telephony,freifunk}
@@ -22,9 +18,6 @@ rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci)
-
-sed -i 's/tinyPortMapper/tinyportmapper/g' package/feeds/custom/tinyportmapper/Makefile
-sed -i 's/tinyfecVPN/tinyfecvpn/g' package/feeds/custom/tinyfecvpn/Makefile
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
 
