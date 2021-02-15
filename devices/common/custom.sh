@@ -8,7 +8,7 @@ done
 
 rm -Rf feeds/{routing,telephony,freifunk}
 
-rm -Rf feeds/luci/{applications,collections,protocols,themes}
+rm -Rf feeds/luci/{applications,collections,protocols,themes,modules}
 rm -Rf feeds/luci/modules/!(luci-base)
 
 rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
@@ -19,7 +19,7 @@ rm -Rf feeds/base/package/kernel
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
-rm -Rf feeds/base/package/system/{procd}
+rm -Rf feeds/base/package/system/{rpcd,procd}
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
 
