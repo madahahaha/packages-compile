@@ -192,6 +192,10 @@ jobs:
           echo -e "$(($(nproc)+1)) thread compile"
           for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
             make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>error.log 2>&1 || true
+            if [ -f error.log ]; then
+            failed="$failed\n$ipk"
+            echo -e "编译失败的插件:$failed"
+            fi
           done
         fi
         make package/index -j1 V=s
