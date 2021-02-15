@@ -22,8 +22,6 @@ CONFIG_PACKAGE_qBittorrent=m
 
 sed -i 's/default m/default n/' Config-build.in
 
-rm -Rf feeds/{routing,telephony,freifunk}
-
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
 
