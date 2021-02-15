@@ -154,7 +154,7 @@ jobs:
          cat devices/${{matrix.target}}/default-settings >> package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
         fi
         sed -i "s/index()/index()\nif luci.sys.exec(\"cat \/etc\/openwrt_release | grep -o -E ^DISTRIB_DESCRIPTION='.*SNAPSHOT.*GaryPang'\") == \"\" then return end/g" package/feeds/custom/luci-app*/luasrc/controller/*.lua
-        cat devices/common/$CONFIG_FILE >> .config
+        # cat devices/common/$CONFIG_FILE >> .config
         if [ -f "devices/${{matrix.target}}/$CONFIG_FILE" ]; then
           echo >> .config
           cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
