@@ -219,6 +219,9 @@ jobs:
         RANDOM=$$$(date +%s)
         rand=$[$RANDOM % ${#Emoji[@]}]
         echo "EMOJI=${Emoji[$rand]}" >> $GITHUB_ENV
+        if [[ $(ls -l packages | grep "^-" | wc -l) >= 300 ]]; then
+           echo "DEPLOY=1" >> $GITHUB_ENV
+        fi
 
     - name: Upload firmware to cowtransfer
       if: env.UPLOAD_FIRMWARE_TO_COWTRANSFER == 'true'
@@ -266,7 +269,7 @@ jobs:
     - name: deploy files to server
       uses: easingthemes/ssh-deploy@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY
       with:
         SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
         ARGS: "-avzr --delete"
@@ -278,7 +281,7 @@ jobs:
     - name: remote ssh command
       uses: appleboy/ssh-action@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY
       with:
         host: op.supes.top
         username: root
