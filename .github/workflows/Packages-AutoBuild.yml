@@ -196,7 +196,7 @@ jobs:
           echo -e "$(($(nproc)+1)) thread compile"
           make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
           for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
-            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>error.log 2>&1 || true
+            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>error_$ipk.log 2>&1 || true
             if [ -f error.log ]; then
             failed="$failed\n$ipk"
             echo -e "编译失败的插件:$failed"
@@ -216,7 +216,7 @@ jobs:
         cp -Rf openwrt/bin/packages/*/custom/* packages/
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
         cp openwrt/.config  packages/${{matrix.target}}_packages.config
-        cp openwrt/error.log  packages/error.log || true
+        cp openwrt/error*.log  packages/ || true
         echo "FIRMWARE=$PWD/packages" >> $GITHUB_ENV
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
         RANDOM=$$$(date +%s)
