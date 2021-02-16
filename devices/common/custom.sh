@@ -2,6 +2,8 @@
 
 shopt -s extglob
 
+rm -rf package/feeds/custom/{luci-app-turboacc,luci-app-mtwifi}
+
 for ipk in $(ls package/feeds/custom | grep "luci-"); do		
   	echo "CONFIG_PACKAGE_$ipk=m" >> .config	
     echo "$ipk" >> ipk
