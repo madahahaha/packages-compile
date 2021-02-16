@@ -114,8 +114,8 @@ jobs:
         mkdir openwrt
         tar -xJf openwrt.tar.xz -C openwrt
         mv -f openwrt/*/* openwrt/
-        ln -sf /usr/bin/python staging_dir/host/bin/python
-        ln -sf /usr/bin/python staging_dir/host/bin/python3
+        ln -sf /usr/bin/python openwrt/staging_dir/host/bin/python
+        ln -sf /usr/bin/python openwrt/staging_dir/host/bin/python3
         svn co https://github.com/garypang13/Actions-OpenWrt/trunk/devices openwrt/devices
 
     - name: Free up disk space
