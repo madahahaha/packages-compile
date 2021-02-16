@@ -222,7 +222,7 @@ jobs:
         RANDOM=$$$(date +%s)
         rand=$[$RANDOM % ${#Emoji[@]}]
         echo "EMOJI=${Emoji[$rand]}" >> $GITHUB_ENV
-        if [[ $(ls -l packages | grep "^-" | wc -l) >= 300 ]]; then
+        if [[ $(ls -l packages | grep "^-" | wc -l) lt 300 ]]; then
            echo "DEPLOY=1" >> $GITHUB_ENV
         fi
 
