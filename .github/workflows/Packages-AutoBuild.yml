@@ -188,8 +188,8 @@ jobs:
         cd openwrt
         make defconfig
         if [[ "${{github.event.action}}" == *j1* ]]; then
-        make package/luci-base/compile -j1 V=s
-         for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
+          make package/luci-base/compile -j1 V=s
+          for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
             make package/$ipk/compile -j1 V=s
           done
         else
