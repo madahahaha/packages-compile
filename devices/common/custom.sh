@@ -4,22 +4,23 @@ shopt -s extglob
 
 for ipk in $(ls package/feeds/custom | grep "luci-"); do		
   	echo "CONFIG_PACKAGE_$ipk=m" >> .config	
+    echo "$ipk" >> ipk
 done
 
 echo '
-CONFIG_PACKAGE_sub-web=m
-CONFIG_PACKAGE_ddns-scripts-aliyun=m
-CONFIG_PACKAGE_ddns-scripts-dnspod=m
-CONFIG_PACKAGE_aria2=m
-CONFIG_PACKAGE_default-settings=m
-CONFIG_PACKAGE_tinyPortMapper=m
-CONFIG_PACKAGE_simple-torrent=m
-CONFIG_PACKAGE_https-dns-proxy=m
-CONFIG_PACKAGE_mwan3=m
-CONFIG_PACKAGE_cdnspeedtest=m
-CONFIG_PACKAGE_qBittorrent=m
-CONFIG_PACKAGE_bpytop=m
-' >> .config
+sub-web
+ddns-scripts-aliyun
+ddns-scripts-dnspod
+aria2
+default-settings
+tinyportmapper
+simple-torrent
+https-dns-proxy
+mwan3
+cdnspeedtest
+qBittorrent
+bpytop
+' >> ipk
 
 # sed -i 's/default m/default n/' Config-build.in
 
