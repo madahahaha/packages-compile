@@ -19,7 +19,7 @@ CONFIG_PACKAGE_mwan3=m
 CONFIG_PACKAGE_cdnspeedtest=m
 CONFIG_PACKAGE_qBittorrent=m
 CONFIG_PACKAGE_bpytop=m
-' >> ./target/linux/x86/64/config-5.4
+' >> .config
 
 # sed -i 's/default m/default n/' Config-build.in
 
