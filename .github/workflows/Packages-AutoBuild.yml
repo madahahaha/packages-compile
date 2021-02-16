@@ -114,6 +114,7 @@ jobs:
         mkdir openwrt
         tar -xJf openwrt.tar.xz -C openwrt
         mv -f openwrt/*/* openwrt/
+        rm -rf openwrt.tar.xz
         ln -sf /usr/bin/python openwrt/staging_dir/host/bin/python
         ln -sf /usr/bin/python openwrt/staging_dir/host/bin/python3
         svn co https://github.com/garypang13/Actions-OpenWrt/trunk/devices openwrt/devices
@@ -187,11 +188,13 @@ jobs:
         cd openwrt
         make defconfig
         if [[ "${{github.event.action}}" == *j1* ]]; then
+        make package/luci-base/compile -j1 V=s
          for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
             make package/$ipk/compile -j1 V=s
           done
         else
           echo -e "$(($(nproc)+1)) thread compile"
+          make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
           for ipk in $(grep -o '^CONFIG_PACKAGE_.*=m' .config.org | sed -e 's/CONFIG_PACKAGE_\(.*\)=m/\1/'); do
             make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>error.log 2>&1 || true
             if [ -f error.log ]; then
