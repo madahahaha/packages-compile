@@ -161,7 +161,6 @@ jobs:
           echo >> .config
           cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
         fi
-        cat devices/common/$CONFIG_FILE >> .config
 
     - name: Apply patches
       run: |
