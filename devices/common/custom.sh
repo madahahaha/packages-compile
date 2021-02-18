@@ -24,14 +24,6 @@ qBittorrent
 bpytop
 ' >> ipk
 
-mv feeds/base base.bak
-mv feeds/packages packages.bak
-make defconfig
-rm -Rf tmp
-mv feeds/base.bak base
-mv feeds/packages.bak packages
-sed -i 's/CONFIG_ALL=y/CONFIG_ALL=n/' .config
-
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
 
@@ -44,6 +36,14 @@ rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci)
+
+mv feeds/base base.bak
+mv feeds/packages packages.bak
+make defconfig
+rm -Rf tmp
+mv feeds/base.bak base
+mv feeds/packages.bak packages
+sed -i 's/CONFIG_ALL=y/CONFIG_ALL=n/' .config
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
 
