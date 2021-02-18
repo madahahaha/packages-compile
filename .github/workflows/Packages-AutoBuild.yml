@@ -133,8 +133,8 @@ jobs:
       run: |
         cp -Rf devices openwrt/
         cd openwrt
-        cp -rf devices/common/* ./
-        cp -rf devices/${{matrix.target}}/* ./
+        cp -rf devices/common/. ./
+        cp -rf devices/${{matrix.target}}/. ./
         ./scripts/feeds update -a
 
     - name: Load custom configuration
