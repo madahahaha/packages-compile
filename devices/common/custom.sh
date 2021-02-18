@@ -38,7 +38,6 @@ rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
-sed -i '$a CONFIG_ALL=y' .config
 mv feeds/base feeds/base.bak
 mv feeds/packages feeds/packages.bak
 make defconfig
