@@ -143,7 +143,6 @@ jobs:
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
         /bin/bash "devices/common/$DIY_SH" || true
-        /bin/bash "devices/common/custom.sh"
         if [ -f "devices/${{matrix.target}}/$DIY_SH" ]; then
           /bin/bash "devices/${{matrix.target}}/$DIY_SH" || true
         fi
@@ -152,6 +151,7 @@ jobs:
           echo >> .config
           cat devices/${{matrix.target}}/$CONFIG_FILE >> .config
         fi
+        /bin/bash "devices/common/custom.sh"
         if [ -f "devices/${{matrix.target}}/custom.sh" ]; then
           /bin/bash "devices/${{matrix.target}}/custom.sh"
         fi
