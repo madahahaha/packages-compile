@@ -24,7 +24,13 @@ qBittorrent
 bpytop
 ' >> ipk
 
-# sed -i 's/default m/default n/' Config-build.in
+mv feeds/base base.bak
+mv feeds/packages packages.bak
+make defconfig
+rm -Rf tmp
+mv feeds/base.bak base
+mv feeds/packages.bak packages
+sed -i 's/CONFIG_ALL=y/CONFIG_ALL=n/' .config
 
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
@@ -44,4 +50,4 @@ sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
 
 sed -i '/WARNING: Makefile/d' scripts/package-metadata.pl
-sed -i '/warning: /d' scripts/config/menu.c
+
