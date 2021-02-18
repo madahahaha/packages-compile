@@ -114,7 +114,7 @@ jobs:
         mkdir openwrt
         tar -xJf openwrt.tar.xz -C openwrt
         mv -f openwrt/*/* openwrt/
-        rm -rf openwrt.tar.xz
+        rm -rf openwrt.tar.xz dl
         ln -sf /usr/bin/python openwrt/staging_dir/host/bin/python
         ln -sf /usr/bin/python openwrt/staging_dir/host/bin/python3
         svn co https://github.com/garypang13/Actions-OpenWrt/trunk/devices openwrt/devices
@@ -124,7 +124,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo mkdir -p -m 777 /mnt/openwrt/dl /mnt/openwrt/staging_dir /mnt/openwrt/build_dir/hostpkg /mnt/openwrt/bin openwrt/staging_dir openwrt/build_dir
+        sudo mkdir -p -m 777 /mnt/openwrt/dl /mnt/openwrt/build_dir/hostpkg /mnt/openwrt/bin
         ln -sf /mnt/openwrt/dl openwrt/dl
         ln -sf /mnt/openwrt/build_dir/hostpkg openwrt/build_dir/hostpkg
         ln -sf /mnt/openwrt/bin openwrt/bin
