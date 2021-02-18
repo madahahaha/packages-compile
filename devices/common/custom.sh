@@ -36,6 +36,7 @@ rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci)
+rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
 mv feeds/base base.bak
 mv feeds/packages packages.bak
