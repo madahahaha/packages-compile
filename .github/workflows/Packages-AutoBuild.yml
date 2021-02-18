@@ -113,7 +113,6 @@ jobs:
         else
             wget -cO sdk.tar.xz https://downloads.openwrt.org/snapshots/targets/rockchip/armv8/openwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         fi
-        svn co https://github.com/garypang13/Actions-OpenWrt/trunk/devices openwrt/devices
 
     - name: Free up disk space
       if: env.FREE_UP_DISK == 'true'
@@ -131,6 +130,17 @@ jobs:
         cd openwrt
         cp -rf devices/common/. ./
         cp -rf devices/${{matrix.target}}/. ./
+        if [ -f sdk.tar.xz ]; then
+          sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
+          mkdir sdk
+          tar -xJf sdk.tar.xz -C sdk
+          cp -rf sdk/*/build_dir ./
+          cp -rf sdk/*/staging_dir/* ./staging_dir/
+          rm -rf sdk.tar.xz sdk dl
+          sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
+          ln -sf /usr/bin/python staging_dir/host/bin/python
+          ln -sf /usr/bin/python staging_dir/host/bin/python3
+        fi
         ./scripts/feeds update -a
 
     - name: Load custom configuration
@@ -138,10 +148,6 @@ jobs:
         cd openwrt
         chmod +x devices/common/*
         chmod +x devices/${{matrix.target}}/*
-        /bin/bash "devices/common/$DIY_SH" || true
-        if [ -f "devices/${{matrix.target}}/$DIY_SH" ]; then
-          /bin/bash "devices/${{matrix.target}}/$DIY_SH" || true
-        fi
         cp -f devices/common/$CONFIG_FILE .config
         if [ -f "devices/${{matrix.target}}/$CONFIG_FILE" ]; then
           echo >> .config
@@ -151,7 +157,7 @@ jobs:
         if [ -f "devices/${{matrix.target}}/custom.sh" ]; then
           /bin/bash "devices/${{matrix.target}}/custom.sh"
         fi
-        cp -Rf ./diy/* ./      
+        cp -Rf ./diy/* ./ || true 
         cp -f devices/common/default-settings package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
         if [ -f "devices/${{matrix.target}}/default-settings" ]; then
          echo >> package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
