@@ -120,7 +120,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo mkdir -p -m 777 /mnt/openwrt/dl /mnt/openwrt/build_dir/hostpkg /mnt/openwrt/bin
+        sudo mkdir -p -m 777 /mnt/openwrt/dl /mnt/openwrt/build_dir/hostpkg openwrt/build_dir /mnt/openwrt/bin
         ln -sf /mnt/openwrt/dl openwrt/dl
         ln -sf /mnt/openwrt/build_dir/hostpkg openwrt/build_dir/hostpkg
         ln -sf /mnt/openwrt/bin openwrt/bin
