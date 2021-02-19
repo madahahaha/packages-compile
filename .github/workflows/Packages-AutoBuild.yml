@@ -139,8 +139,8 @@ jobs:
     - name: Load custom configuration
       run: |
         cd openwrt
-        chmod +x devices/common/*
-        chmod +x devices/${{matrix.target}}/*
+        chmod +x devices/common/* || true
+        chmod +x devices/${{matrix.target}}/* || true
         cp -f devices/common/.config .config
         if [ -f "devices/${{matrix.target}}/.config" ]; then
           echo >> .config
