@@ -127,7 +127,7 @@ jobs:
         tar -xJf sdk.tar.xz -C openwrt
         rm -Rf sdk.tar.xz
         cd openwrt
-        mv -f ./openwrt-sdk*/* ./ || true
+        cp -rf ./openwrt-sdk*/. ./ || true
         sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
         ln -sf /usr/bin/python staging_dir/host/bin/python
         ln -sf /usr/bin/python staging_dir/host/bin/python3
