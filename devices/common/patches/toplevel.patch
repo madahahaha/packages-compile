@@ -1,10 +1,9 @@
 --- a/include/toplevel.mk
 +++ b/include/toplevel.mk
-@@ -218,8 +218,6 @@
- ifeq ($(SDK),1)
+@@ -219,7 +219,6 @@
  
  %::
--	@+$(PREP_MK) $(NO_TRACE_MAKE) -r -s prereq
+ 	@+$(PREP_MK) $(NO_TRACE_MAKE) -r -s prereq
 -	@./scripts/config/conf $(KCONF_FLAGS) --defconfig=.config Config.in
  	@+$(ULIMIT_FIX) $(SUBMAKE) -r $@
  
