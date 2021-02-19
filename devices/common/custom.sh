@@ -30,7 +30,6 @@ sub-web
 ddns-scripts-aliyun
 ddns-scripts-dnspod
 aria2
-default-settings
 tinyportmapper
 simple-torrent
 https-dns-proxy
