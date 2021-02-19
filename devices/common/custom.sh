@@ -2,7 +2,7 @@
 
 shopt -s extglob
 
-rm -rf feeds/custom/{luci-app-turboacc,luci-app-mtwifi}
+rm -rf feeds/custom/luci-app-{turboacc,mtwifi,frps}
 
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
