@@ -53,13 +53,13 @@ rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
-mv feeds/base feeds/base.bak
-mv feeds/packages feeds/packages.bak
-make defconfig
-rm -Rf tmp
-mv feeds/base.bak feeds/base
-mv feeds/packages.bak feeds/packages
-sed -i 's/CONFIG_ALL=y/CONFIG_ALL=n/' .config
+#mv feeds/base feeds/base.bak
+#mv feeds/packages feeds/packages.bak
+#make defconfig
+#rm -Rf tmp
+#mv feeds/base.bak feeds/base
+#mv feeds/packages.bak feeds/packages
+#sed -i 's/CONFIG_ALL=y/CONFIG_ALL=n/' .config
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
 
