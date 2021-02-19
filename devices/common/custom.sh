@@ -2,6 +2,23 @@
 
 shopt -s extglob
 
+rm -rf feeds/custom/{luci-app-turboacc,luci-app-mtwifi}
+
+rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
+rm -Rf feeds/luci/modules/!(luci-base)
+
+rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
+rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
+rm -Rf feeds/packages/net/!(mosquitto|curl)
+rm -Rf feeds/packages/lang/!(golang|python)
+rm -Rf feeds/base/package/kernel/!(cryptodev-linux|linux)
+rm -Rf feeds/base/package/network/!(services)
+rm -Rf feeds/base/package/network/services/!(ppp)
+rm -Rf feeds/base/package/utils/!(util-linux|lua)
+rm -Rf feeds/base/package/system/!(opkg|uci)
+rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
+
+./scripts/feeds update -a
 ./scripts/feeds install -a
 
 sed -i 's/Os/O2/g' include/target.mk
@@ -14,11 +31,9 @@ for ipk in $(find package/feeds/custom/* -maxdepth 0); do
 	if [[ ! -d "$ipk/patches" && ! "$(grep "codeload.github.com" $ipk/Makefile)" ]]; then
 		find $ipk/ -maxdepth 1 -name "Makefile" \
 		| xargs -i sed -i "s/PKG_SOURCE_VERSION:=[0-9a-z]\{15,\}/PKG_SOURCE_VERSION:=HEAD/g" {}
-	fi	
+	fi
 done
 sed -i 's/$(VERSION) &&/$(VERSION) ;/g' include/download.mk
-
-rm -rf package/feeds/custom/{luci-app-turboacc,luci-app-mtwifi}
 
 for ipk in $(ls package/feeds/custom | grep "luci-"); do		
   	echo "CONFIG_PACKAGE_$ipk=m" >> .config	
@@ -38,20 +53,6 @@ cdnspeedtest
 qBittorrent
 bpytop
 ' >> ipk
-
-rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
-rm -Rf feeds/luci/modules/!(luci-base)
-
-rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
-rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
-rm -Rf feeds/packages/net/!(mosquitto|curl)
-rm -Rf feeds/packages/lang/!(golang|python)
-rm -Rf feeds/base/package/kernel/!(cryptodev-linux|linux)
-rm -Rf feeds/base/package/network/!(services)
-rm -Rf feeds/base/package/network/services/!(ppp)
-rm -Rf feeds/base/package/utils/!(util-linux|lua)
-rm -Rf feeds/base/package/system/!(opkg|uci)
-rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
 mv feeds/base feeds/base.bak
 mv feeds/packages feeds/packages.bak
