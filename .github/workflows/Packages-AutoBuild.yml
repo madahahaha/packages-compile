@@ -172,26 +172,6 @@ jobs:
       uses: garypang13/debugger-action@master
       if: contains(github.event.action, 'ssh')
 
-    - name: Compile the firmware
-      if: ! contains(github.event.action, 'luci-app')
-      run: |
-        cd openwrt
-        make defconfig
-        if [[ "${{github.event.action}}" == *j1* ]]; then
-          make package/luci-base/compile -j1 V=s
-          for ipk in $(cat ipk); do
-            make package/$ipk/compile -j1 V=s
-          done
-        else
-          echo -e "$(($(nproc)+1)) thread compile"
-          make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
-          for ipk in $(cat ipk); do
-            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>error_$ipk.log 2>&1 || true
-          done
-        fi
-        make package/index
-        echo "status=success" >> $GITHUB_ENV
-
     - name: Compile single package
       if: contains(github.event.action, 'luci-app')
       run: |
