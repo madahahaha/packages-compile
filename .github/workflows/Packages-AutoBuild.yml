@@ -173,7 +173,7 @@ jobs:
       if: contains(github.event.action, 'ssh')
 
     - name: Compile the firmware
-      if: ! contains(github.event.action, 'luci-app')
+      if: contains(github.event.action, 'luci-app')
       run: |
         cd openwrt
         make defconfig
