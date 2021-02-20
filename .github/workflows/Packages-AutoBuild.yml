@@ -173,6 +173,7 @@ jobs:
       if: contains(github.event.action, 'ssh')
 
     - name: Compile the firmware
+      if: ! contains(github.event.action, 'luci-app')
       run: |
         cd openwrt
         make defconfig
@@ -188,8 +189,18 @@ jobs:
             make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>error_$ipk.log 2>&1 || true
           done
         fi
-        make package/index -j1 V=s
+        make package/index
         echo "status=success" >> $GITHUB_ENV
+
+    - name: Compile single package
+      if: contains(github.event.action, 'luci-app')
+      run: |
+        cd openwrt
+        make defconfig
+          echo -e "$(($(nproc)+1)) thread compile"
+          make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
+          make package/${{ github.event.action }}/compile -j$(($(nproc)+1)) || make package/${{ github.event.action }}/compile -j1 V=s >>error_${{ github.event.action }}.log 2>&1 || true
+        make package/index
 
     - name: Check space usage
       run: df -hT
@@ -245,7 +256,7 @@ jobs:
     - name: Upload firmware for release
       uses: softprops/action-gh-release@v1
       continue-on-error: true
-      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true'
+      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && ! contains(github.event.action, 'luci-app')
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
@@ -257,10 +268,22 @@ jobs:
     - name: deploy files to server
       uses: easingthemes/ssh-deploy@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY && ! contains(github.event.action, 'luci-app')
       with:
         SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
-        ARGS: "-avzr --delete"
+        ARGS: "-avzr --delete-after"
+        SOURCE: "packages/"
+        REMOTE_HOST: op.supes.top
+        REMOTE_USER: root
+        TARGET: "/www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/"
+
+    - name: deploy files to server
+      uses: easingthemes/ssh-deploy@master
+      continue-on-error: true
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY && contains(github.event.action, 'luci-app')
+      with:
+        SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
+        ARGS: "-avzr"
         SOURCE: "packages/"
         REMOTE_HOST: op.supes.top
         REMOTE_USER: root
