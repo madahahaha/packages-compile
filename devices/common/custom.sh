@@ -52,6 +52,7 @@ mwan3
 cdnspeedtest
 qBittorrent
 bpytop
+pandownload-fake-server
 ' >> ipk
 
 mv feeds/base feeds/base.bak
