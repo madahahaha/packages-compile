@@ -255,11 +255,23 @@ jobs:
     - name: Upload firmware for release
       uses: softprops/action-gh-release@v1
       continue-on-error: true
-      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && ! contains(github.event.action, 'luci-app')
+      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && env.DEPLOY && ! contains(github.event.action, 'luci-app')
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
         files: "${{ env.FIRMWARE }}/*"
+        name: ${{ env.date2 }} ${{matrix.target}} ${{ env.EMOJI }}
+        tag_name: ${{ env.date }}_${{matrix.target}}
+        body_path: release.txt
+
+    - name: Upload firmware for release
+      uses: softprops/action-gh-release@v1
+      continue-on-error: true
+      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && ! env.DEPLOY && ! contains(github.event.action, 'luci-app')
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+      with:
+        files: "${{ env.FIRMWARE }}/error_*"
         name: ${{ env.date2 }} ${{matrix.target}} ${{ env.EMOJI }}
         tag_name: ${{ env.date }}_${{matrix.target}}
         body_path: release.txt
@@ -279,7 +291,7 @@ jobs:
     - name: deploy files to server
       uses: easingthemes/ssh-deploy@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY && contains(github.event.action, 'luci-app')
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && contains(github.event.action, 'luci-app')
       with:
         SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
         ARGS: "-avzr"
@@ -335,3 +347,7 @@ jobs:
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+
+    - name: Exit
+      if: env.DEPLOY != 1
+      run: exit
