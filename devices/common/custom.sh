@@ -29,7 +29,7 @@ sed -i 's/+python\( \|$\)/+python3/g' package/feeds/custom/*/Makefile
 sed -i 's?../../lang?$(TOPDIR)/feeds/packages/lang?g' package/feeds/custom/*/Makefile
 for ipk in $(find package/feeds/custom/* -maxdepth 0); do	
 	if [[ ! -d "$ipk/patches" && ! "$(grep "codeload.github.com" $ipk/Makefile)" ]]; then
-		find $ipk/ -maxdepth 1 -name "Makefile" ! -patch *tcping* \
+		find $ipk/ -maxdepth 1 -name "Makefile" ! -path *tcping* \
 		| xargs -i sed -i "s/PKG_SOURCE_VERSION:=[0-9a-z]\{15,\}/PKG_SOURCE_VERSION:=HEAD/g" {}
 	fi
 done
