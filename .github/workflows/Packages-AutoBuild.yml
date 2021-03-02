@@ -291,7 +291,7 @@ jobs:
     - name: deploy files to server with no delete
       uses: easingthemes/ssh-deploy@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && contains(github.event.action, 'luci-app')
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && ! env.DEPLOY
       with:
         SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
         ARGS: "-avzr"
