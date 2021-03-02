@@ -18,6 +18,9 @@ rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
+rm -rf ./feeds/packages/lang/golang
+svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
