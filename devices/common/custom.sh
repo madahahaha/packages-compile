@@ -10,7 +10,7 @@ rm -Rf feeds/luci/modules/!(luci-base)
 rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
 rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
 rm -Rf feeds/packages/net/!(mosquitto|curl)
-rm -Rf feeds/packages/lang/!(golang|python)
+rm -Rf feeds/packages/lang/!(python)
 rm -Rf feeds/base/package/kernel/!(cryptodev-linux|linux)
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
@@ -18,7 +18,6 @@ rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
-rm -rf ./feeds/packages/lang/golang
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
 
 ./scripts/feeds update -a
