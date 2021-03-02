@@ -208,7 +208,7 @@ jobs:
       id: organize
       run: |
         mkdir packages
-        cp -Rf openwrt/bin/packages/*/custom/* packages/
+        cp -Rf openwrt/bin/packages/*/custom/* packages/ || true
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
         cp openwrt/.config  packages/${{matrix.target}}_packages.config
         cp openwrt/error*.log  packages/ || true
