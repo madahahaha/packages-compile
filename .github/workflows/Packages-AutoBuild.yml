@@ -199,7 +199,7 @@ jobs:
         make defconfig
           echo -e "$(($(nproc)+1)) thread compile"
           make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
-          make package/${{ github.event.action }}/compile -j$(($(nproc)+1)) || make package/${{ github.event.action }}/compile -j1 V=s >>error_${{ github.event.action }}.log 2>&1 || true
+          make package/${{ github.event.action }}/compile -j$(($(nproc)+1)) || make package/${{ github.event.action }}/compile -j1 V=s
 
     - name: Check space usage
       run: df -hT
@@ -288,7 +288,7 @@ jobs:
         REMOTE_USER: root
         TARGET: "/www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/"
 
-    - name: deploy files to server
+    - name: deploy files to server with no delete
       uses: easingthemes/ssh-deploy@master
       continue-on-error: true
       if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && contains(github.event.action, 'luci-app')
