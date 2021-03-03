@@ -48,7 +48,6 @@ ddns-scripts-aliyun
 ddns-scripts-dnspod
 aria2
 tinyportmapper
-simple-torrent
 https-dns-proxy
 mwan3
 cdnspeedtest
