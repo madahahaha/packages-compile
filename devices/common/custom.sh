@@ -2,6 +2,8 @@
 
 shopt -s extglob
 
+sed -i '/	refresh_config();/d' scripts/feeds
+
 rm -rf feeds/custom/luci-app-{turboacc,mtwifi}
 
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
