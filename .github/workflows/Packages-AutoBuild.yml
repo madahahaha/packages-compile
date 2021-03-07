@@ -260,8 +260,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
         files: "${{ env.FIRMWARE }}/*"
-        name: ${{ env.date2 }} ${{matrix.target}} ${{ env.EMOJI }}
-        tag_name: ${{ env.date }}_${{matrix.target}}
+        name: ${{ env.date2 }} ${{ env.MTARGET }} ${{ env.EMOJI }}
+        tag_name: ${{ env.date }}_${{ env.MTARGET }}
         body_path: release.txt
 
     - name: Upload firmware for release
@@ -272,8 +272,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
         files: "${{ env.FIRMWARE }}/error_*"
-        name: ❌ ${{ env.date2 }} ${{matrix.target}} ❌
-        tag_name: ${{ env.date }}_${{matrix.target}}
+        name: ❌ ${{ env.date2 }} ${{ env.MTARGET }} ❌
+        tag_name: ${{ env.date }}_${{ env.MTARGET }}
         body_path: release.txt
 
     - name: deploy files to server
