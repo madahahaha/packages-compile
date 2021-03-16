@@ -303,7 +303,7 @@ jobs:
     - name: remote ssh command
       uses: appleboy/ssh-action@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
       with:
         host: op.supes.top
         username: root
