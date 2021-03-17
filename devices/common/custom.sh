@@ -19,6 +19,8 @@ rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci|ubus)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
+rm -Rf feeds/package/kernel/cryptodev-linux
+
 
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
 
