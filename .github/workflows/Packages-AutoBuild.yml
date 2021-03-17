@@ -255,7 +255,7 @@ jobs:
     - name: Upload firmware for release
       uses: softprops/action-gh-release@v1
       continue-on-error: true
-      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && env.DEPLOY && ! contains(github.event.action, 'luci-app')
+      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && env.DEPLOY && contains(github.event.action, 'r2s') == false && ! contains(github.event.action, 'x86_64') == false && ! contains(github.event.action, 'ac2100') == false
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
