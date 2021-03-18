@@ -193,7 +193,7 @@ jobs:
         echo "status=success" >> $GITHUB_ENV
 
     - name: Compile single package
-      if: contains(github.event.action, 'aarch64') == false && ! contains(github.event.action, 'x86_64') == false && ! contains(github.event.action, 'mipsel') == false
+      if: contains(github.event.action, 'aarch64') == false && contains(github.event.action, 'x86_64') == false && contains(github.event.action, 'mipsel') == false
       run: |
         cd openwrt
         make defconfig
@@ -267,7 +267,7 @@ jobs:
     - name: Upload firmware for release
       uses: softprops/action-gh-release@v1
       continue-on-error: true
-      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && ! env.DEPLOY && ! contains(github.event.action, 'luci-app')
+      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && contains(github.event.action, 'aarch64') == false && contains(github.event.action, 'x86_64') == false && contains(github.event.action, 'mipsel') == false
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
@@ -279,7 +279,7 @@ jobs:
     - name: deploy files to server
       uses: easingthemes/ssh-deploy@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY && ! contains(github.event.action, 'luci-app')
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY && contains(github.event.action, 'aarch64') == false && contains(github.event.action, 'x86_64') == false && contains(github.event.action, 'mipsel') == false
       with:
         SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
         ARGS: "-avzr --delete-after"
