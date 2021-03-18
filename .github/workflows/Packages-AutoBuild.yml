@@ -184,6 +184,7 @@ jobs:
           done
         else
           echo -e "$(($(nproc)+1)) thread compile"
+          make target/linux/compile -j$(($(nproc)+1))
           make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
           for ipk in $(cat ipk); do
             make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>error_$ipk.log 2>&1 || true
@@ -198,6 +199,7 @@ jobs:
         cd openwrt
         make defconfig
           echo -e "$(($(nproc)+1)) thread compile"
+          make target/linux/compile -j$(($(nproc)+1))
           make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
           make package/${{ github.event.action }}/compile -j$(($(nproc)+1)) || make package/${{ github.event.action }}/compile -j1 V=s
 
