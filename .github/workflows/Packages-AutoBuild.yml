@@ -178,16 +178,16 @@ jobs:
         cd openwrt
         make defconfig
         if [[ "${{github.event.action}}" == *j1* ]]; then
-          make package/luci-base/compile -j1 V=s
+          make target/linux/compile -j$(($(nproc)+1)) || make target/linux/compile V=s
           for ipk in $(cat ipk); do
-            make package/$ipk/compile -j1 V=s
+            make package/$ipk/compile V=s
           done
         else
           echo -e "$(($(nproc)+1)) thread compile"
-          make target/linux/compile -j$(($(nproc)+1))
-          make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
+          make target/linux/compile -j$(($(nproc)+1)) || make target/linux/compile V=s
+          make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile V=s
           for ipk in $(cat ipk); do
-            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile -j1 V=s >>error_$ipk.log 2>&1 || true
+            make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile V=s >>error_$ipk.log 2>&1 || true
           done
         fi
         make package/index
