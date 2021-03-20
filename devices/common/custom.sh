@@ -13,11 +13,11 @@ rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
 rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
 rm -Rf feeds/packages/net/!(mosquitto|curl)
 rm -Rf feeds/packages/lang/!(python)
-rm -Rf feeds/base/package/kernel/!(linux)
+rm -Rf feeds/base/package/kernel
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
-rm -Rf feeds/base/package/{firmware,linux}
+rm -Rf feeds/base/package/firmware
 rm -Rf feeds/base/package/system/!(opkg|uci|ubus)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
