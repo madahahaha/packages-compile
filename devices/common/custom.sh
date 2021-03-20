@@ -17,7 +17,7 @@ rm -Rf feeds/base/package/kernel/!(linux)
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
-rm -Rf feeds/base/package/firmware
+rm -Rf feeds/base/package/{firmware,linux}
 rm -Rf feeds/base/package/system/!(opkg|uci|ubus)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
