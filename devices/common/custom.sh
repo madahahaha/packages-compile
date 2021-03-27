@@ -50,7 +50,6 @@ sub-web
 ddns-scripts-aliyun
 ddns-scripts-dnspod
 aria2
-https-dns-proxy
 mwan3
 cdnspeedtest
 qBittorrent
