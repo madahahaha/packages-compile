@@ -20,7 +20,7 @@ rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci|ubus)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
-
+sed -i 's?\.\./\.\.?$(TOPDIR)/feeds/packages?g' ackage/feeds/packages/*/Makefile
 
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
 
