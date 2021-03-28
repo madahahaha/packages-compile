@@ -20,12 +20,12 @@ rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci|ubus)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
-sed -i 's?\.\./\.\.?$(TOPDIR)/feeds/packages?g' package/feeds/packages/*/Makefile
-
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
+
+sed -i 's?\.\./\.\.?$(TOPDIR)/feeds/packages?g' package/feeds/packages/*/Makefile
 
 sed -i 's/Os/O2/g' include/target.mk
 rm -rf ./feeds/packages/lang/golang
