@@ -25,8 +25,6 @@ svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-sed -i 's?include \.\./\.\.?include $(TOPDIR)/feeds/packages?g' package/feeds/packages/*/*
-
 sed -i 's/Os/O2/g' include/target.mk
 rm -rf ./feeds/packages/lang/golang
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
