@@ -129,8 +129,12 @@ jobs:
         cd openwrt
         cp -rf ./openwrt-sdk*/. ./ || true
         sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
-        ln -sf /usr/bin/python staging_dir/host/bin/python
-        ln -sf /usr/bin/python staging_dir/host/bin/python3
+        if [ -f /usr/bin/python ]; then
+          ln -sf /usr/bin/python staging_dir/host/bin/python
+        else
+          ln -sf /usr/bin/python3 staging_dir/host/bin/python
+        fi
+        ln -sf /usr/bin/python3 staging_dir/host/bin/python3
         mv -f ../devices ./
         cp -rf devices/common/. ./
         cp -rf devices/${{matrix.target}}/. ./
