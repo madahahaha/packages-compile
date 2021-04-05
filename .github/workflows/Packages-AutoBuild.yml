@@ -168,9 +168,9 @@ jobs:
     - name: Default PPPOE Setting
       if: env.PPPOE_USERNAME && env.PPPOE_PASSWD
       run: |
-        sed -i '$i uci set network.wan.username=${{ env.PPPOE_USERNAME }}' openwrt/package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
-        sed -i '$i uci set network.wan.password=${{ env.PPPOE_PASSWD }}' openwrt/package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
-        sed -i '$i uci commit network' openwrt/package/*/*/default-settings/root/etc/uci-defaults/99-default-settings
+        sed -i '$i uci set network.wan.username=${{ env.PPPOE_USERNAME }}' openwrt/package/*/*/default-settings/files/uci.defaults
+        sed -i '$i uci set network.wan.password=${{ env.PPPOE_PASSWD }}' openwrt/package/*/*/default-settings/files/uci.defaults
+        sed -i '$i uci commit network' openwrt/package/*/*/default-settings/files/uci.defaults
       
     - name: SSH connection to Actions
       uses: garypang13/debugger-action@master
