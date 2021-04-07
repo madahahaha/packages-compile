@@ -4,7 +4,7 @@ shopt -s extglob
 
 sed -i '/	refresh_config();/d' scripts/feeds
 
-rm -rf feeds/custom/{frp,oaf,luci-app-{turboacc,mtwifi}}
+rm -rf feeds/custom/{frp,xray-core,oaf,luci-app-{turboacc,mtwifi}}
 
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
