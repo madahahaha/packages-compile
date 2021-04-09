@@ -312,15 +312,15 @@ jobs:
     - name: remote ssh command
       uses: appleboy/ssh-action@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && (! env.DEPLOY || (contains(github.event.action, 'r2s') == false && contains(github.event.action, 'x86_64') == false && contains(github.event.action, 'ac2100') == false))
       with:
         host: op.supes.top
         username: root
         key: ${{ env.SSH_PRIVATE_KEY }}
         script: |
-          cp -R /www/wwwroot/op.supes.top/packages/keep/common/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
-          cp -R /www/wwwroot/op.supes.top/packages/keep/${{ env.MTARGET }}/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
-          opkg all
+          ( # cp -R /www/wwwroot/op.supes.top/packages/keep/common/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
+          # cp -R /www/wwwroot/op.supes.top/packages/keep/${{ env.MTARGET }}/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
+          opkg all ) &
 
     - name: Upload packages for artifact
       uses: actions/upload-artifact@main
