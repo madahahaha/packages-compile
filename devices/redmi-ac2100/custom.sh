@@ -4,3 +4,5 @@
 echo '
 UnblockNeteaseMusic
 ' >> ipk
+
+sed -i '/sub-web/d' ipk
