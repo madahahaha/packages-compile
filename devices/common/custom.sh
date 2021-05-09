@@ -4,7 +4,7 @@ shopt -s extglob
 
 sed -i '/	refresh_config();/d' scripts/feeds
 
-rm -rf feeds/custom/{frp,xray-core,oaf,luci-app-{turboacc,mtwifi},naiveproxy,MentoHUST*}
+rm -rf feeds/custom/{frp,xray-core,.github,diy,mt-drivers,mt7601u-ap,mtk-eip93,r81*,rtl8*,shortcut-fe,luci-app-{turboacc,mtwifi}}
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
 rm -rf feeds/packages/libs/!(libev|c-ares|cjson|boost|lib*|expat|tiff|freetype|udns|pcre2)
@@ -12,7 +12,6 @@ rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
 rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
 rm -Rf feeds/packages/net/!(mosquitto|curl)
 rm -Rf feeds/packages/lang/!(python)
-rm -Rf feeds/packages/lang/python/python3
 rm -Rf feeds/base/package/{kernel,firmware}
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
