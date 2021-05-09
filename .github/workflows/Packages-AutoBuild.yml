@@ -199,7 +199,6 @@ jobs:
               make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile V=s >>error_$ipk.log 2>&1 || true
             fi
           done
-        make package/index
         echo "status=success" >> $GITHUB_ENV
 
     - name: Compile single package
