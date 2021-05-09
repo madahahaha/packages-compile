@@ -293,19 +293,7 @@ jobs:
     - name: deploy files to server
       uses: easingthemes/ssh-deploy@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY && (contains(github.event.action, 'aarch64') || contains(github.event.action, 'r2s') || contains(github.event.action, 'x86_64') || contains(github.event.action, 'mipsel') || contains(github.event.action, 'ac2100'))
-      with:
-        SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
-        ARGS: "-avzr --delete-after --exclude='node*' --exclude='libx264*' --exclude='naiveproxy*' --exclude='aria2*' --exclude='MentoHUST*' --exclude='bpytop*'"
-        SOURCE: "packages/"
-        REMOTE_HOST: op.supes.top
-        REMOTE_USER: root
-        TARGET: "/www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/"
-
-    - name: deploy files to server with no delete
-      uses: easingthemes/ssh-deploy@master
-      continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && (! env.DEPLOY || (contains(github.event.action, 'r2s') == false && contains(github.event.action, 'x86_64') == false && contains(github.event.action, 'ac2100') == false))
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
       with:
         SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
         ARGS: "-avzr"
@@ -317,7 +305,7 @@ jobs:
     - name: remote ssh command
       uses: appleboy/ssh-action@master
       continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && (! env.DEPLOY || (contains(github.event.action, 'r2s') == false && contains(github.event.action, 'x86_64') == false && contains(github.event.action, 'ac2100') == false))
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY && 1 == 0
       with:
         host: op.supes.top
         username: root
@@ -361,7 +349,3 @@ jobs:
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-
-    - name: Exit
-      if: env.DEPLOY != 1
-      run: exit
