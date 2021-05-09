@@ -46,6 +46,9 @@ mv feeds/base.bak feeds/base
 mv feeds/packages.bak feeds/packages
 sed -i 's/CONFIG_ALL=y/CONFIG_ALL=n/' .config
 
+cp -f devices/common/po2lmo /usr/bin/po2lmo
+chmod +x /usr/bin/po2lmo
+
 sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
 
 sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
