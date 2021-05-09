@@ -305,9 +305,9 @@ jobs:
         username: root
         key: ${{ env.SSH_PRIVATE_KEY }}
         script: |
-          ( # cp -R /www/wwwroot/op.supes.top/packages/keep/common/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
+          # cp -R /www/wwwroot/op.supes.top/packages/keep/common/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
           # cp -R /www/wwwroot/op.supes.top/packages/keep/${{ env.MTARGET }}/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
-          opkg all ) &
+          opkg all
 
     - name: Upload packages for artifact
       uses: actions/upload-artifact@main
