@@ -191,6 +191,7 @@ jobs:
         make defconfig
           echo -e "$(($(nproc)+1)) thread compile"
           for ipk in $(ls package/feeds/custom); do
+            echo $ipk
             gitdate=$(curl -H "Authorization: token ${{ secrets.REPO_TOKEN }}" -s "https://api.github.com/repos/garypang13/openwrt-packages/commits?path=$ipk&per_page=1" | jq -r '.[0].commit.committer.date')
             gitdate=$(date -d "$gitdate" +%s)
             now=$(date -d "$(date '+%Y-%m-%d %H:%M:%S')" +%s)
