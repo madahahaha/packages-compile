@@ -195,7 +195,7 @@ jobs:
           done
         else
           echo -e "$(($(nproc)+1)) thread compile"
-          for ipk in $(cat ipk); do
+          for ipk in $(ls package/feeds/custom); do
             gitdate=$(curl -s https://api.github.com/repos/garypang13/openwrt-packages/commits?path=$ipk&per_page=1" | jq -r '.[0].commit.committer.date')
             gitdate=$(date -d "$gitdate" +%s)
             now=$(date -d "$(date '+%Y-%m-%d %H:%M:%S')" +%s)
