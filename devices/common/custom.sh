@@ -4,22 +4,21 @@ shopt -s extglob
 
 sed -i '/	refresh_config();/d' scripts/feeds
 
-rm -rf feeds/custom/{frp,xray-core,oaf,luci-app-{turboacc,mtwifi}}
-
+rm -rf feeds/custom/{frp,xray-core,oaf,luci-app-{turboacc,mtwifi},naiveproxy,aria2,MentoHUST*}
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
 rm -Rf feeds/luci/modules/!(luci-base)
-
+rm -rf feeds/packages/libs/!(libev|c-ares|cjson|boost|lib*|expat|tiff|freetype|udns)
 rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
 rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
 rm -Rf feeds/packages/net/!(mosquitto|curl)
 rm -Rf feeds/packages/lang/!(python)
+rm -Rf feeds/packages/lang/python/python3
 rm -Rf feeds/base/package/{kernel,firmware}
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|uci|ubus)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
-rm -Rf feeds/custom/naiveproxy
 
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
 
@@ -48,11 +47,9 @@ echo '
 sub-web
 ddns-scripts-aliyun
 ddns-scripts-dnspod
-aria2
 mwan3
 cdnspeedtest
 qBittorrent
-bpytop
 pandownload-fake-server
 ' >> ipk
 

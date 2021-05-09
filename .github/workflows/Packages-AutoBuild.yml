@@ -154,7 +154,9 @@ jobs:
           cat devices/${{matrix.target}}/.config >> .config
         fi
         cp -Rf ./diy/* ./ || true
-        sed -i "s/index()/index()\nif luci.sys.exec(\"cat \/etc\/openwrt_release | grep -o -E ^DISTRIB_DESCRIPTION='.*SNAPSHOT.*GaryPang'\") == \"\" then return end/g" package/feeds/custom/luci-app*/luasrc/controller/*.lua
+        if [[ ${{github.actor}} == "garypang13" ]]; then
+          sed -i "s/index()/index()\nif luci.sys.exec(\"cat \/etc\/openwrt_release | grep -o -E ^DISTRIB_DESCRIPTION='.*SNAPSHOT.*GaryPang'\") == \"\" then return end/g" package/feeds/custom/luci-app*/luasrc/controller/*.lua
+        fi
 
     - name: Apply patches
       run: |
@@ -207,7 +209,6 @@ jobs:
         cd openwrt
         make defconfig
           echo -e "$(($(nproc)+1)) thread compile"
-          make package/luci-base/compile -j$(($(nproc)+1)) || make package/luci-base/compile -j1 V=s
           make package/${{ github.event.action }}/compile -j$(($(nproc)+1)) || make package/${{ github.event.action }}/compile -j1 V=s
 
     - name: Check space usage
@@ -216,7 +217,7 @@ jobs:
     - name: Organize files
       id: organize
       run: |
-        mkdir packages
+        mkdir packages packages/build
         cp -Rf openwrt/bin/packages/*/custom/* packages/ || true
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
         cp openwrt/.config  packages/${{matrix.target}}_packages.config
@@ -291,7 +292,7 @@ jobs:
       if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser') && env.DEPLOY && (contains(github.event.action, 'aarch64') || contains(github.event.action, 'r2s') || contains(github.event.action, 'x86_64') || contains(github.event.action, 'mipsel') || contains(github.event.action, 'ac2100'))
       with:
         SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
-        ARGS: "-avzr --delete-after --exclude='node*' --exclude='libx264*' --exclude='naiveproxy*'"
+        ARGS: "-avzr --delete-after --exclude='node*' --exclude='libx264*' --exclude='naiveproxy*' --exclude='aria2*' --exclude='MentoHUST*' --exclude='bpytop*'"
         SOURCE: "packages/"
         REMOTE_HOST: op.supes.top
         REMOTE_USER: root
