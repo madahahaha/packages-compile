@@ -39,20 +39,6 @@ for ipk in $(find package/feeds/custom/* -maxdepth 0); do
 done
 sed -i 's/$(VERSION) &&/$(VERSION) ;/g' include/download.mk
 
-for ipk in $(ls package/feeds/custom | grep "luci-"); do		
-    echo "$ipk" >> ipk
-done
-
-echo '
-sub-web
-ddns-scripts-aliyun
-ddns-scripts-dnspod
-mwan3
-cdnspeedtest
-qBittorrent
-pandownload-fake-server
-' >> ipk
-
 mv feeds/base feeds/base.bak
 mv feeds/packages feeds/packages.bak
 make defconfig
