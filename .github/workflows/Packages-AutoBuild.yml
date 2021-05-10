@@ -189,9 +189,13 @@ jobs:
       run: |
         cd openwrt
         make defconfig
+        mv -f feeds/custom feeds/custom.b
+        mkdir feeds/custom
+        cp -rf feeds/custom.b/ninja feeds/custom/
           echo -e "$(($(nproc)+1)) thread compile"
           for ipk in $(ls package/feeds/custom); do
             echo $ipk
+            cp -rf feeds/custom.b/$ipk feeds/custom/
             gitdate=$(curl -H "Authorization: token ${{ secrets.REPO_TOKEN }}" -s "https://api.github.com/repos/garypang13/openwrt-packages/commits?path=$ipk&per_page=1" | jq -r '.[0].commit.committer.date')
             gitdate=$(date -d "$gitdate" +%s)
             now=$(date -d "$(date '+%Y-%m-%d %H:%M:%S')" +%s)
@@ -206,6 +210,9 @@ jobs:
       run: |
         cd openwrt
         make defconfig
+        mv -f feeds/custom feeds/custom.b
+        mkdir feeds/custom
+        cp -rf feeds/custom.b/ninja feeds/custom.b/${{ github.event.action }} feeds/custom/
           echo -e "$(($(nproc)+1)) thread compile"
           make package/${{ github.event.action }}/compile -j$(($(nproc)+1)) || make package/${{ github.event.action }}/compile -j1 V=s
 
