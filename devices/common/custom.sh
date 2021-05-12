@@ -51,7 +51,7 @@ chmod +x staging_dir/host/bin/po2lmo
 
 sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
 
-sed -i "/mediaurlbase/d" package/*/*/luci-theme*/root/etc/uci-defaults/*
+sed -i "/mediaurlbase/d" package/feeds/*/luci-theme*/root/etc/uci-defaults/*
 
 sed -i '/WARNING: Makefile/d' scripts/package-metadata.pl
 
