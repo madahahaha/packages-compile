@@ -294,9 +294,16 @@ jobs:
         tag_name: ${{ env.date }}_${{ env.MTARGET }}
         body_path: release.txt
 
+    - name: Upload packages for artifact
+      uses: actions/upload-artifact@main
+      continue-on-error: true
+      if: env.UPLOAD_FIRMWARE_FOR_ARTIFACT == 'true'
+      with:
+        name: ${{ env.date3 }} ${{ env.MTARGET }}
+        path: ${{ env.FIRMWARE }}
+
     - name: deploy files to server
       uses: easingthemes/ssh-deploy@master
-      continue-on-error: true
       if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
       with:
         SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
@@ -308,7 +315,6 @@ jobs:
 
     - name: remote ssh command
       uses: appleboy/ssh-action@master
-      continue-on-error: true
       if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
       with:
         host: op.supes.top
@@ -318,14 +324,6 @@ jobs:
           # cp -R /www/wwwroot/op.supes.top/packages/keep/common/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
           # cp -R /www/wwwroot/op.supes.top/packages/keep/${{ env.MTARGET }}/* /www/wwwroot/op.supes.top/packages/${{ env.MTARGET }}/
           opkg all
-
-    - name: Upload packages for artifact
-      uses: actions/upload-artifact@main
-      continue-on-error: true
-      if: env.UPLOAD_FIRMWARE_FOR_ARTIFACT == 'true'
-      with:
-        name: ${{ env.date3 }} ${{ env.MTARGET }}
-        path: ${{ env.FIRMWARE }}
 
     - name: WeChat notification
       continue-on-error: true
