@@ -187,15 +187,14 @@ jobs:
         cd openwrt
         make defconfig
         make download -j$(($(nproc)+1)) &
+        mv -f feeds/custom feeds/custom.b
+        mkdir feeds/custom
+        mv -f feeds/custom.b/{ninja,wxbase} feeds/custom/
 
     - name: Compile the firmware
       if: contains(github.event.action, 'aarch64') || contains(github.event.action, 'r2s') || contains(github.event.action, 'x86_64') || contains(github.event.action, 'mipsel') || contains(github.event.action, 'ac2100') || contains(github.event.action, 'Rpi-4B')
       run: |
         cd openwrt
-        make defconfig
-        mv -f feeds/custom feeds/custom.b
-        mkdir feeds/custom
-        mv -f feeds/custom.b/{ninja,wxbase} feeds/custom/
           echo -e "$(($(nproc)+1)) thread compile"
           for ipk in $(ls feeds/custom.b); do
             echo $ipk
@@ -213,9 +212,6 @@ jobs:
       if: contains(github.event.action, 'aarch64') == false && contains(github.event.action, 'r2s') == false && contains(github.event.action, 'x86_64') == false && contains(github.event.action, 'mipsel') == false && contains(github.event.action, 'ac2100') == false && contains(github.event.action, 'Rpi-4B') == false
       run: |
         cd openwrt
-        make defconfig
-        mv -f feeds/custom feeds/custom.b
-        mkdir feeds/custom
         cp -rf feeds/custom.b/ninja feeds/custom.b/${{ github.event.action }} feeds/custom/
           echo -e "$(($(nproc)+1)) thread compile"
           make package/${{ github.event.action }}/compile -j$(($(nproc)+1)) || make package/${{ github.event.action }}/compile -j1 V=s
