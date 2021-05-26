@@ -189,7 +189,7 @@ jobs:
         make download -j$(($(nproc)+1)) &
         mv -f feeds/custom feeds/custom.b
         mkdir feeds/custom
-        mv -f feeds/custom.b/{ninja,wxbase} feeds/custom/
+        mv -f feeds/custom.b/{ninja,wxbase,lib*} feeds/custom/
 
     - name: Compile the firmware
       if: contains(github.event.action, 'aarch64') || contains(github.event.action, 'r2s') || contains(github.event.action, 'x86_64') || contains(github.event.action, 'mipsel') || contains(github.event.action, 'ac2100') || contains(github.event.action, 'Rpi-4B')
