@@ -5,20 +5,6 @@ shopt -s extglob
 sed -i '/	refresh_config();/d' scripts/feeds
 
 rm -rf feeds/custom/{frp,xray-core,.github,diy,mt-drivers,mt7601u-ap,mtk-eip93,r81*,rtl8*,shortcut-fe,luci-app-{turboacc,mtwifi},.gitignore,LICENSE,README.md}
-rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
-rm -Rf feeds/luci/modules/!(luci-base)
-# rm -rf feeds/packages/libs/!(libev|c-ares|cjson|boost|lib*|expat|tiff|freetype|udns|pcre2)
-rm -rf feeds/packages/libs/libcups
-rm -Rf feeds/packages/!(lang|libs|devel|utils|net)
-rm -Rf feeds/packages/utils/!(pcsc-lite|xz)
-rm -Rf feeds/packages/net/!(mosquitto|curl)
-rm -Rf feeds/packages/lang/!(python)
-rm -Rf feeds/base/package/{kernel,firmware}
-rm -Rf feeds/base/package/network/!(services)
-rm -Rf feeds/base/package/network/services/!(ppp)
-rm -Rf feeds/base/package/utils/!(util-linux|lua)
-rm -Rf feeds/base/package/system/!(opkg|uci|ubus)
-rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
 
