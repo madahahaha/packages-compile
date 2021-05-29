@@ -17,8 +17,8 @@ rm -Rf feeds/packages/lang/!(python)
 rm -Rf feeds/base/package/{kernel,firmware}
 rm -Rf feeds/base/package/network/!(services)
 rm -Rf feeds/base/package/network/services/!(ppp)
-rm -Rf feeds/base/package/utils/!(util-linux|lua)
-rm -Rf feeds/base/package/system/!(opkg|uci|ubus)
+rm -Rf feeds/base/package/utils/!(util-linux)
+rm -Rf feeds/base/package/system/!(opkg|ubus)
 rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
