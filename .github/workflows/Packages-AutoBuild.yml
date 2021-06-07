@@ -234,7 +234,9 @@ jobs:
         rand=$[$RANDOM % ${#Emoji[@]}]
         echo "EMOJI=${Emoji[$rand]}" >> $GITHUB_ENV
         if [[ $(ls -l packages/error* | grep "^-" | wc -l) -le 0 ]]; then
-           echo "DEPLOY=1" >> $GITHUB_ENV
+           echo "NAME=${{ env.date2 }} ${{ env.MTARGET }} ${{ env.EMOJI }}" >> $GITHUB_ENV
+        else
+           echo "NAME=❌ ${{ env.date2 }} ${{ env.MTARGET }} ❌" >> $GITHUB_ENV
         fi
 
     - name: Upload firmware to cowtransfer
@@ -276,19 +278,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
         files: "${{ env.FIRMWARE }}/*"
-        name: ${{ env.date2 }} ${{ env.MTARGET }} ${{ env.EMOJI }}
-        tag_name: ${{ env.date }}_${{ env.MTARGET }}
-        body_path: release.txt
-
-    - name: Upload error for release
-      uses: softprops/action-gh-release@v1
-      continue-on-error: true
-      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && ! env.DEPLOY
-      env:
-        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-      with:
-        files: "${{ env.FIRMWARE }}/error_*"
-        name: ❌ ${{ env.date2 }} ${{ env.MTARGET }} ❌
+        name: ${{ env.DEPLOY }}
         tag_name: ${{ env.date }}_${{ env.MTARGET }}
         body_path: release.txt
 
