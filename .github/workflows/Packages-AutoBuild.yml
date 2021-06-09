@@ -273,12 +273,12 @@ jobs:
     - name: Upload packages for release
       uses: softprops/action-gh-release@v1
       continue-on-error: true
-      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && env.DEPLOY
+      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true'
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
         files: "${{ env.FIRMWARE }}/*"
-        name: ${{ env.DEPLOY }}
+        name: ${{ env.NAME }}
         tag_name: ${{ env.date }}_${{ env.MTARGET }}
         body_path: release.txt
 
