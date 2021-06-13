@@ -6,7 +6,7 @@ sed -i '/	refresh_config();/d' scripts/feeds
 
 rm -rf feeds/custom/{frp,xray-core,.github,diy,mt-drivers,mt7601u-ap,mtk-eip93,r81*,rtl8*,shortcut-fe,fast-classifier,luci-app-mtwifi,.gitignore,LICENSE,README.md}
 
-rm -Rf feeds/luci/{applications,collections,protocols,themes,libs}
+rm -Rf feeds/luci/{applications,collections,protocols,themes,libs,docs}
 rm -Rf feeds/luci/modules/!(luci-base)
 # rm -rf feeds/packages/libs/!(libev|c-ares|cjson|boost|lib*|expat|tiff|freetype|udns|pcre2)
 rm -rf feeds/packages/libs/libcups
@@ -27,7 +27,6 @@ rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 sed -i 's/Os/O2/g' include/target.mk
 rm -rf ./feeds/packages/lang/golang
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
-sed -i '/BuildPackage,curl/d' feeds/packages/net/curl/Makefile
 sed -i "s/+nginx\( \|$\)/+nginx-ssl\1/g"  package/feeds/custom/*/Makefile
 sed -i 's/+python\( \|$\)/+python3/g' package/feeds/custom/*/Makefile
 sed -i 's?../../lang?$(TOPDIR)/feeds/packages/lang?g' package/feeds/custom/*/Makefile
