@@ -27,6 +27,7 @@ rm -Rf feeds/custom/luci-app-*/po/!(zh_Hans)
 sed -i 's/Os/O2/g' include/target.mk
 rm -rf ./feeds/packages/lang/golang
 svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
+sed -i '/BuildPackage,curl/d' feeds/packages/net/curl/Makefile
 sed -i "s/+nginx\( \|$\)/+nginx-ssl\1/g"  package/feeds/custom/*/Makefile
 sed -i 's/+python\( \|$\)/+python3/g' package/feeds/custom/*/Makefile
 sed -i 's?../../lang?$(TOPDIR)/feeds/packages/lang?g' package/feeds/custom/*/Makefile
