@@ -31,7 +31,7 @@ sed -i 's/Os/O2/g' include/target.mk
 #rm -rf ./feeds/packages/lang/golang
 #svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
 
-sed -i 
+sed -i \
 	-e "s/+\(luci\|luci-ssl\)\( \|$\)/+luci-ssl-nginx\2/" \
 	-e "s/+nginx\( \|$\)/+nginx-ssl\1/" \
 	-e 's/+python\( \|$\)/+python3/' \
