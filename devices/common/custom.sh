@@ -54,12 +54,16 @@ mv feeds/base.bak feeds/base
 mv feeds/packages.bak feeds/packages
 sed -i 's/CONFIG_ALL=y/CONFIG_ALL=n/' .config
 
-cp -f devices/common/po2lmo staging_dir/host/bin/po2lmo
-chmod +x staging_dir/host/bin/po2lmo
-
-sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
-
 sed -i "/mediaurlbase/d" package/feeds/*/luci-theme*/root/etc/uci-defaults/*
 
 sed -i '/WARNING: Makefile/d' scripts/package-metadata.pl
 
+if [ -f /usr/bin/python ]; then
+	ln -sf /usr/bin/python staging_dir/host/bin/python
+else
+	ln -sf /usr/bin/python3 staging_dir/host/bin/python
+fi
+ln -sf /usr/bin/python3 staging_dir/host/bin/python3
+cp -f devices/common/po2lmo staging_dir/host/bin/po2lmo
+chmod +x staging_dir/host/bin/po2lmo
+sed -i 's,$(STAGING_DIR_HOST)/bin/upx,upx,' package/feeds/custom/*/Makefile
