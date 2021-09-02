@@ -30,9 +30,14 @@ sed -i 's/\/cgi-bin\/\(luci\|cgi-\)/\/\1/g' `find package/feeds/custom/luci-*/ -
 sed -i 's/Os/O2/g' include/target.mk
 #rm -rf ./feeds/packages/lang/golang
 #svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
-sed -i "s/+nginx\( \|$\)/+nginx-ssl\1/g"  package/feeds/custom/*/Makefile
-sed -i 's/+python\( \|$\)/+python3/g' package/feeds/custom/*/Makefile
-sed -i 's?../../lang?$(TOPDIR)/feeds/packages/lang?g' package/feeds/custom/*/Makefile
+
+sed -i 
+	-e "s/+\(luci\|luci-ssl\)\( \|$\)/+luci-ssl-nginx\2/" \
+	-e "s/+nginx\( \|$\)/+nginx-ssl\1/" \
+	-e 's/+python\( \|$\)/+python3/' \
+	-e 's?../../lang?$(TOPDIR)/feeds/packages/lang?' \
+	package/feeds/custom/*/Makefile
+
 for ipk in $(ls -d ./feeds/custom/*);do
 	if [[ ! -d "$ipk/patches" ]]; then
 		sed -i "s/PKG_SOURCE_VERSION:=[0-9a-z]\{7,\}/PKG_SOURCE_VERSION:=HEAD/g" !(luci-*|rblibtorrent|n2n_v2)/Makefile
