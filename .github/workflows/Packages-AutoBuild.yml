@@ -105,7 +105,7 @@ jobs:
 
     - name: Clone source code
       run: |
-        REPO_BRANCH="$(git ls-remote --tags git://github.com/openwrt/openwrt | cut -d/ -f3- | sort -t. -nk1,2 | awk '/^[^{]*$/{version=$1}END{print version}'| sed -e 's/v//')"
+        REPO_BRANCH="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | jq -r '.[].name' | grep v21 | head -n 1 | sed -e 's/v//')"
         if [ ${{matrix.target}} == "redmi-ac2100" ]; then
             wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/$REPO_BRANCH/targets/ramips/mt7621/openwrt-sdk-$REPO_BRANCH-ramips-mt7621_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         elif [[ ${{matrix.target}} == "x86_64" ]]; then
