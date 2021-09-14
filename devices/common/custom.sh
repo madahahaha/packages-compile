@@ -43,7 +43,6 @@ for ipk in $(ls -d ./feeds/custom/*);do
 		sed -i "s/PKG_SOURCE_VERSION:=[0-9a-z]\{7,\}/PKG_SOURCE_VERSION:=HEAD/g" !(luci-*|rblibtorrent|n2n_v2)/Makefile
 	fi
 done
-sed -i 's/$(VERSION) &&/$(VERSION) ;/g' include/download.mk
 
 cp -f devices/common/.config .config
 mv feeds/base feeds/base.bak
