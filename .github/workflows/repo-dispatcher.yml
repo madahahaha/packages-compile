@@ -29,7 +29,7 @@ jobs:
     - name: cancel running workflows
       uses: styfle/cancel-workflow-action@main
       with:
-        workflow_id: 4439874
+        workflow_id: Packages-AutoBuild.yml,repo-dispatcher.yml
         access_token: ${{ github.token }}
 
     - name: Trigger matrix Update
