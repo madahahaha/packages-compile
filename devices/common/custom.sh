@@ -25,7 +25,6 @@ rm -Rf feeds/base/package/system/!(opkg|ubus|uci)
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
-sed -i '/killall -HUP rpcd/d' feeds/luci/luci.mk
 sed -i 's/\(Page\|page\|e\)\?.acl_depends.*\?}//' `find package/feeds/custom/luci-*/luasrc/controller/* -name "*.lua"`
 sed -i 's/\/cgi-bin\/\(luci\|cgi-\)/\/\1/g' `find package/feeds/custom/luci-*/ -name "*.lua" -or -name "*.htm*" -or -name "*.js"` &
 sed -i 's/Os/O2/g' include/target.mk
