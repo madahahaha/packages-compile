@@ -179,6 +179,7 @@ jobs:
           echo -e "$(($(nproc)+1)) thread compile"
           fpkg="$(echo ${{github.event.action}} | sed -e 's/aarch64_generic//' -e 's/x86_64//' -e 's/aarch64_cortex-a72//' -e 's/ init//' -e 's/ ssh//' -e 's/ noser//' -e 's/ cw//')"
           [ "$fpkg" ] && fpkg="^$fpkg$"
+          echo "$fpkg"
           for ipk in $(ls custom.b | grep -E "$fpkg"); do
             echo $ipk
             function comp(){
