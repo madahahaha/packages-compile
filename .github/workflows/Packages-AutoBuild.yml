@@ -177,7 +177,7 @@ jobs:
       run: |
         cd openwrt
           echo -e "$(($(nproc)+1)) thread compile"
-          fpkg="$(echo "${{github.event.action}}" | sed -e 's/\(aarch64_generic\|x86_64\|aarch64_cortex-a72\|nanopi-r2s\|Rpi-4B\| init\| ssh\| noser\| cw\)//')"
+          fpkg="$(echo "${{github.event.action}}" | sed -e 's/\(aarch64_generic\|x86_64\|aarch64_cortex-a72\|nanopi-r2s\|Rpi-4B\| ssh\| noser\| cw\)//')"
           [ "$fpkg" ] && fpkg="^$fpkg$"
           for ipk in $(ls custom.b | grep -E "$fpkg"); do
             echo $ipk
@@ -194,9 +194,6 @@ jobs:
               rm -f package/feeds/custom/$ipk
              fi
             }
-            if [[ "$fpkg" || "$(echo ${{github.event.action}} | grep ' init')" ]]; then
-              comp
-            else
               gitdate=$(curl -H "Authorization: token ${{ secrets.REPO_TOKEN }}" -s "https://api.github.com/repos/kiddin9/openwrt-packages/commits?path=$ipk&per_page=1" | jq -r '.[0].commit.committer.date')
               if [ $gitdate != null ]; then
                 gitdate=$(date -d "$gitdate" +%s)
@@ -205,7 +202,6 @@ jobs:
                   comp
                 fi
               fi
-            fi
           done
         echo "status=success" >> $GITHUB_ENV
 
