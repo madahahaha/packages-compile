@@ -194,6 +194,7 @@ jobs:
               rm -f package/feeds/custom/$ipk
              fi
             }
+            echo "find $fpkg"
             if [ "$fpkg" ]; then
               comp
             else
