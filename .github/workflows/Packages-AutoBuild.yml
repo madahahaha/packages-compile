@@ -62,7 +62,7 @@ jobs:
         echo "UPLOAD_FIRMWARE_FOR_RELEASE=${UPLOAD_FIRMWARE_FOR_RELEASE}" >> $GITHUB_ENV
         echo "UPLOAD_FIRMWARE_TO_COWTRANSFER=${UPLOAD_FIRMWARE_TO_COWTRANSFER}" >> $GITHUB_ENV
         echo "UPLOAD_FIRMWARE_TO_WETRANSFER=${UPLOAD_FIRMWARE_TO_WETRANSFER}" >> $GITHUB_ENV
-        if [ ${{matrix.target}} == "redmi-ac2100" ]; then
+        if [ ${{matrix.target}} == "ac2100" ]; then
             echo "MTARGET=mipsel_24kc" >> $GITHUB_ENV
         elif [ ${{matrix.target}} == "x86_64" ]; then
             echo "MTARGET=x86_64" >> $GITHUB_ENV
@@ -70,6 +70,8 @@ jobs:
             echo "MTARGET=aarch64_cortex-a72" >> $GITHUB_ENV
          elif [ ${{matrix.target}} == "nanopi-r2s" ]; then
             echo "MTARGET=aarch64_generic" >> $GITHUB_ENV
+         elif [ ${{matrix.target}} == "N1" ]; then
+            echo "MTARGET=aarch64_cortex-a53" >> $GITHUB_ENV
         fi
 
     - name: Trigger Packages Update
@@ -106,7 +108,7 @@ jobs:
     - name: Clone source code
       run: |
         REPO_BRANCH="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | jq -r '.[].name' | grep v21 | head -n 1 | sed -e 's/v//')"
-        if [ ${{matrix.target}} == "redmi-ac2100" ]; then
+        if [ ${{matrix.target}} == "ac2100" ]; then
             wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/$REPO_BRANCH/targets/ramips/mt7621/openwrt-sdk-$REPO_BRANCH-ramips-mt7621_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         elif [[ ${{matrix.target}} == "x86_64" ]]; then
             wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/$REPO_BRANCH/targets/x86/64/openwrt-sdk-$REPO_BRANCH-x86-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz || wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/21.02-SNAPSHOT/targets/x86/64/openwrt-sdk-21.02-SNAPSHOT-x86-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz
@@ -114,6 +116,8 @@ jobs:
             wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/$REPO_BRANCH/targets/rockchip/armv8/openwrt-sdk-$REPO_BRANCH-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz || wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/21.02-SNAPSHOT/targets/rockchip/armv8/openwrt-sdk-21.02-SNAPSHOT-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         elif [[ ${{matrix.target}} == "Rpi-4B" ]]; then
             wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/$REPO_BRANCH/targets/bcm27xx/bcm2711/openwrt-sdk-$REPO_BRANCH-bcm27xx-bcm2711_gcc-8.4.0_musl.Linux-x86_64.tar.xz || wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/21.02-SNAPSHOT/targets/bcm27xx/bcm2711/openwrt-sdk-21.02-SNAPSHOT-bcm27xx-bcm2711_gcc-8.4.0_musl.Linux-x86_64.tar.xz
+        elif [[ ${{matrix.target}} == "N1" ]]; then
+            wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/$REPO_BRANCH/targets/armvirt/64/openwrt-sdk-$REPO_BRANCH-armvirt-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz || wget -cO sdk.tar.xz https://downloads.openwrt.org/releases/21.02-SNAPSHOT/targets/armvirt/64/openwrt-sdk-21.02-SNAPSHOT-armvirt-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         fi
 
     - name: Free up disk space
@@ -177,7 +181,8 @@ jobs:
       run: |
         cd openwrt
           echo -e "$(($(nproc)+1)) thread compile"
-          fpkg="$(echo "${{github.event.action}}" | sed -e 's/\(aarch64_generic\|x86_64\|aarch64_cortex-a72\|nanopi-r2s\|Rpi-4B\| ssh\| noser\| cw\)//')"
+          fpkg="$(echo "${{github.event.action}}" | sed -e 's/\(aarch64_generic\|x86_64\|aarch64_cortex-a72\|nanopi-r2s\|Rpi-4B\| [0-9]\+\| ssh\| noser\| cw\)//')"
+          during="$(echo "${{github.event.action}}" | grep -o -E ' [0-9]+' | sed -e 's/ //')"
           [ "$fpkg" ] && fpkg="^$fpkg$"
           for ipk in $(ls custom.b | grep -E "$fpkg"); do
             echo $ipk
@@ -194,14 +199,15 @@ jobs:
               rm -f package/feeds/custom/$ipk
              fi
             }
-            if [ "$fpkg" ]; then
+            if [[ "$fpkg" && ! "$during" ]]; then
               comp
             else
               gitdate=$(curl -H "Authorization: token ${{ secrets.REPO_TOKEN }}" -s "https://api.github.com/repos/kiddin9/openwrt-packages/commits?path=$ipk&per_page=1" | jq -r '.[0].commit.committer.date')
               if [ $gitdate != null ]; then
                 gitdate=$(date -d "$gitdate" +%s)
                 now=$(date -d "$(date '+%Y-%m-%d %H:%M:%S')" +%s)
-                if [[ $(expr $gitdate + 90000) > $now ]]; then
+                [ "$during" ] || during="90000"
+                if [[ $(expr $gitdate + $during) > $now ]]; then
                   comp
                 fi
               fi
