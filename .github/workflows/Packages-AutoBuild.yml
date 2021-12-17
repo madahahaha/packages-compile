@@ -152,7 +152,7 @@ jobs:
           cat devices/${{matrix.target}}/.config >> .config
         fi
         #if [[ ${{github.actor}} == "kiddin9" ]]; then
-          #sed -i "s/index()/index()\nif luci.sys.exec(\"cat \/etc\/openwrt_release | grep -o -E ^DISTRIB_DESCRIPTION='.*(GaryPang|Kiddin)'\") == \"\" then return end/g" package/feeds/custom/luci-app*/luasrc/controller/*.lua
+          #sed -i "s/index()/index()\nif luci.sys.exec(\"cat \/etc\/openwrt_release | grep -o -E ^DISTRIB_DESCRIPTION='.*(GaryPang|Kiddin)'\") == \"\" then return end/g" package/feeds/kiddin9/luci-app*/luasrc/controller/*.lua
         #fi
 
     - name: Apply patches
@@ -171,11 +171,11 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        mv -f package/feeds/custom custom.b
+        mv -f package/feeds/kiddin9 kiddin9.b
         mv -f feeds/packages/lang feeds/packages/lang.b
         mv -f feeds/packages feeds/packages.b
-        mkdir package/feeds/custom
-        mv -f custom.b/{wxbase,lib*,rapidjson,jpcre2,toml11,quickjspp,qtbase,qttools,rblibtorrent} package/feeds/custom/
+        mkdir package/feeds/kiddin9
+        mv -f kiddin9.b/{wxbase,lib*,rapidjson,jpcre2,toml11,quickjspp,qtbase,qttools,rblibtorrent} package/feeds/kiddin9/
 
     - name: Compile the firmware
       run: |
@@ -184,19 +184,19 @@ jobs:
           fpkg="$(echo "${{github.event.action}}" | sed -e 's/\(aarch64_generic\|x86_64\|aarch64_cortex-a72\|nanopi-r2s\|Rpi-4B\| [0-9]\+\| ssh\| noser\| cw\)//')"
           during="$(echo "${{github.event.action}}" | grep -o -E ' [0-9]+' | sed -e 's/ //')"
           [ "$fpkg" ] && fpkg="^$fpkg$"
-          for ipk in $(ls custom.b | grep -E "$fpkg"); do
+          for ipk in $(ls kiddin9.b | grep -E "$fpkg"); do
             echo $ipk
             function comp(){
-             cp -rf custom.b/$ipk package/feeds/custom/
+             cp -rf kiddin9.b/$ipk package/feeds/kiddin9/
              if [[ $ipk != luci-* ]]; then
               mv -f feeds/packages.b feeds/packages
-              [ "$(grep -E "(PKG_BUILD_DEPENDS|packages/lang|meson.mk)" package/feeds/custom/$ipk/Makefile)" ] && mv feeds/packages/lang.b feeds/packages/lang
+              [ "$(grep -E "(PKG_BUILD_DEPENDS|packages/lang|meson.mk)" package/feeds/kiddin9/$ipk/Makefile)" ] && mv feeds/packages/lang.b feeds/packages/lang
              fi
              make package/$ipk/compile -j$(($(nproc)+1)) || make package/$ipk/compile V=s >>error_$ipk.log 2>&1 || true
              if [[ $ipk != luci-* ]]; then
               mv feeds/packages/lang feeds/packages/lang.b || true
               mv -f feeds/packages feeds/packages.b
-              rm -f package/feeds/custom/$ipk
+              rm -f package/feeds/kiddin9/$ipk
              fi
             }
             if [[ "$fpkg" && ! "$during" ]]; then
@@ -222,7 +222,7 @@ jobs:
       id: organize
       run: |
         mkdir packages
-        cp -Rf openwrt/bin/packages/*/custom/* packages/ || true
+        cp -Rf openwrt/bin/packages/*/kiddin9/* packages/ || true
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
         echo "FIRMWARE=$PWD/packages" >> $GITHUB_ENV
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")

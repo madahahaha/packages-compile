@@ -3,9 +3,9 @@
 shopt -s extglob
 sed -i '/	refresh_config();/d' scripts/feeds
 ./scripts/feeds update -a
-rm -rf feeds/custom/{.github,diy,mt-drivers,miniupnpd,shortcut-fe,luci-app-mtwifi,luci-app-mtwifi,luci-app-easymesh,mtk_apcli,.gitignore,LICENSE,README.md}
+rm -rf feeds/kiddin9/{.github,diy,mt-drivers,miniupnpd,shortcut-fe,luci-app-mtwifi,luci-app-mtwifi,luci-app-easymesh,mtk_apcli,.gitignore,LICENSE,README.md}
 
-for ipk in $(ls -d ./feeds/custom/*);
+for ipk in $(ls -d ./feeds/kiddin9/*);
 do
 	[ -n "$(grep "KernelPackage" "$ipk/Makefile")" ] && rm -rf $ipk || true
 done
@@ -25,8 +25,8 @@ rm -Rf feeds/base/package/system/!(opkg|ubus|uci)
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
-sed -i 's/\(page\|e\)\?.acl_depends.*\?}//' `find package/feeds/custom/luci-*/luasrc/controller/* -name "*.lua"`
-sed -i 's/\/cgi-bin\/\(luci\|cgi-\)/\/\1/g' `find package/feeds/custom/luci-*/ -name "*.lua" -or -name "*.htm*" -or -name "*.js"` &
+sed -i 's/\(page\|e\)\?.acl_depends.*\?}//' `find package/feeds/kiddin9/luci-*/luasrc/controller/* -name "*.lua"`
+sed -i 's/\/cgi-bin\/\(luci\|cgi-\)/\/\1/g' `find package/feeds/kiddin9/luci-*/ -name "*.lua" -or -name "*.htm*" -or -name "*.js"` &
 sed -i 's/Os/O2/g' include/target.mk
 #rm -rf ./feeds/packages/lang/golang
 #svn co https://github.com/immortalwrt/packages/trunk/lang/golang feeds/packages/lang/golang
@@ -37,7 +37,7 @@ sed -i \
 	-e 's/+python\( \|$\)/+python3/' \
 	-e 's?../../lang?$(TOPDIR)/feeds/packages/lang?' \
 	-e 's,$(STAGING_DIR_HOST)/bin/upx,upx,' \
-	package/feeds/custom/*/Makefile
+	package/feeds/kiddin9/*/Makefile
 
 cp -f devices/common/.config .config
 mv feeds/base feeds/base.bak
