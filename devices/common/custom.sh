@@ -7,7 +7,7 @@ rm -rf feeds/kiddin9/{.github,diy,mt-drivers,miniupnpd,shortcut-fe,luci-app-mtwi
 
 for ipk in $(ls -d ./feeds/kiddin9/*);
 do
-	[ -n "$(grep "KernelPackage" "$ipk/Makefile")" ] && rm -rf $ipk || true
+	[[ "$(grep "KernelPackage" "$ipk/Makefile")" && ! "$(grep "define Package" "$ipk/Makefile")" ]] && rm -rf $ipk || true
 done
 
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs,docs,contrib}
