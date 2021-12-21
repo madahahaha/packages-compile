@@ -3,9 +3,9 @@
 shopt -s extglob
 sed -i '/	refresh_config();/d' scripts/feeds
 ./scripts/feeds update -a
-rm -rf feeds/kiddin9/{.github,diy,mt-drivers,miniupnpd,shortcut-fe,luci-app-mtwifi,luci-app-mtwifi,luci-app-easymesh,mtk_apcli,.gitignore,LICENSE,README.md}
+rm -rf feeds/kiddin9/{diy,mt-drivers,shortcut-fe,luci-app-mtwifi}
 
-for ipk in $(ls -d ./feeds/kiddin9/*);
+for ipk in $(find feeds/kiddin9/* -maxdepth 0 -type d);
 do
 	[[ "$(grep "KernelPackage" "$ipk/Makefile")" && ! "$(grep "BuildPackage" "$ipk/Makefile")" ]] && rm -rf $ipk || true
 done
