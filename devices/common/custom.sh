@@ -23,8 +23,9 @@ rm -Rf feeds/base/package/network/services/!(ppp)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|ubus|uci)
 
-./scripts/feeds update -a
+./scripts/feeds install -a -p kiddin9
 ./scripts/feeds install -a
+
 sed -i 's/\(page\|e\)\?.acl_depends.*\?}//' `find package/feeds/kiddin9/luci-*/luasrc/controller/* -name "*.lua"`
 sed -i 's/\/cgi-bin\/\(luci\|cgi-\)/\/\1/g' `find package/feeds/kiddin9/luci-*/ -name "*.lua" -or -name "*.htm*" -or -name "*.js"` &
 sed -i 's/Os/O2/g' include/target.mk
