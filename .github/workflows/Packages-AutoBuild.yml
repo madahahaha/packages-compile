@@ -224,6 +224,7 @@ jobs:
       run: |
         mkdir packages
         cp -Rf openwrt/bin/packages/*/kiddin9/* packages/ || true
+        cp -f openwrt/.config packages/.config || true
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
         echo "FIRMWARE=$PWD/packages" >> $GITHUB_ENV
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
