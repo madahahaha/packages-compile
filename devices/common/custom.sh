@@ -8,7 +8,6 @@ rm -rf feeds/kiddin9/{diy,mt-drivers,shortcut-fe,luci-app-mtwifi}
 for ipk in $(find feeds/kiddin9/* -maxdepth 0 -type d);
 do
 	[[ "$(grep "KernelPackage" "$ipk/Makefile")" && ! "$(grep "BuildPackage" "$ipk/Makefile")" ]] && rm -rf $ipk || true
-	sed -i "s/DEPENDS:=@[^ ]* /DEPENDS:=/" $ipk/Makefile
 done
 
 rm -Rf feeds/luci/{applications,collections,protocols,themes,libs,docs,contrib}
