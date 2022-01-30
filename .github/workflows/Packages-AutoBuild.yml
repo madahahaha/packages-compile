@@ -219,6 +219,7 @@ jobs:
       id: organize
       run: |
         mv -f openwrt/bin/packages/*/kiddin9 packages || true
+        mkdir packages
         mv -f openwrt/.config packages/ || true
         mv -f openwrt/bin/targets/*/*/packages/base-files* packages/ || true
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
