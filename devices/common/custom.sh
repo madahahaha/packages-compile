@@ -49,7 +49,8 @@ make defconfig
 rm -Rf tmp
 mv feeds/base.bak feeds/base
 mv feeds/packages.bak feeds/packages
-sed -i 's/CONFIG_ALL=y/CONFIG_ALL=n/' .config
+sed -i -e 's/CONFIG_ALL=y/CONFIG_ALL=n/' \
+-e '/CONFIG_SIGNATURE_CHECK/d' .config
 sed -i '/PACKAGE_kmod-/d' .config
 
 sed -i "/mediaurlbase/d" package/feeds/*/luci-theme*/root/etc/uci-defaults/*
