@@ -1,8 +1,6 @@
 #!/bin/bash
 
 shopt -s extglob
-sed -i '/	refresh_config();/d' scripts/feeds
-./scripts/feeds update -a
 rm -rf feeds/kiddin9/{diy,mt-drivers,shortcut-fe,luci-app-mtwifi}
 
 for ipk in $(find feeds/kiddin9/* -maxdepth 0 -type d);
