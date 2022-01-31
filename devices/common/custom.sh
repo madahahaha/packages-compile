@@ -40,6 +40,10 @@ sed -i \
 	-e 's,$(STAGING_DIR_HOST)/bin/upx,upx,' \
 	package/feeds/kiddin9/*/Makefile
 
+sed -i "s/tty1::askfirst/tty1::respawn/g" target/linux/*/base-files/etc/inittab
+date=`date +%m.%d.%Y`
+sed -i -e "/# REVISION:=/c\REVISION:=$date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
+
 cp -f devices/common/.config .config
 mv feeds/base feeds/base.bak
 mv feeds/packages feeds/packages.bak
