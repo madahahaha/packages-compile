@@ -44,6 +44,7 @@ sed -i "s/tty1::askfirst/tty1::respawn/g" target/linux/*/base-files/etc/inittab
 date=`date +%m.%d.%Y`
 sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
 rm -rf package/feeds/kiddin9/base-files/files/etc/openwrt_*
+sed -i "/openwrt_/d" package/feeds/kiddin9/base-files/Makefile
 
 cp -f devices/common/.config .config
 mv feeds/base feeds/base.bak
