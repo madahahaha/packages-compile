@@ -178,7 +178,7 @@ jobs:
       run: |
         cd openwrt
           echo -e "$(($(nproc)+1)) thread compile"
-          fpkg="$(echo "${{github.event.action}}" | sed -e 's/\(aarch64_generic\|x86_64\|aarch64_cortex-a72\|nanopi-r2s\|Rpi-4B\| [0-9]\+\| ssh\| noser\| cw\)//')"
+          fpkg="$(echo "${{github.event.action}}" | sed -e 's/\(aarch64_generic\|x86_64\|aarch64_cortex-a72\|nanopi-r2s\|Rpi-4B\|N1\|ac2100\| [0-9]\+\| ssh\| noser\| cw\)//')"
           during="$(echo "${{github.event.action}}" | grep -o -E ' [0-9]+' | sed -e 's/ //')"
           [ "$fpkg" ] && fpkg="^$(echo $fpkg)$"
           for ipk in $(ls kiddin9.b | grep -E "$fpkg"); do
