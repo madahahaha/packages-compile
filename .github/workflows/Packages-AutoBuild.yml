@@ -182,8 +182,6 @@ jobs:
           fpkg="$(echo "$fpkg" | sed -e 's/ //g')"
           during="$(echo "${{github.event.action}}" | grep -o -E ' [0-9]+' | sed -e 's/ //')"
           [ "$fpkg" ] && fpkg="^$(echo $fpkg)$"
-          echo "${{github.event.action}}"
-          echo $fpkg
           for ipk in $(ls kiddin9.b | grep -E "$fpkg"); do
             echo $ipk
             function comp(){
