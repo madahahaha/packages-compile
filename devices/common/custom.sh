@@ -23,7 +23,7 @@ rm -Rf feeds/base/package/network/utils/!(iwinfo|iptables)
 rm -Rf feeds/base/package/utils/!(util-linux|lua)
 rm -Rf feeds/base/package/system/!(opkg|ubus|uci)
 
-exit 0;
+./scripts/feeds update -a
 ./scripts/feeds install -a -p kiddin9
 ./scripts/feeds install -a
 
