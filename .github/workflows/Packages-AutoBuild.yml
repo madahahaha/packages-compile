@@ -119,6 +119,7 @@ jobs:
         elif [[ ${{matrix.target}} == "N1" ]]; then
             curl -fL -m 60 -o sdk.tar.xz https://downloads.openwrt.org/releases/$REPO_BRANCH/targets/armvirt/64/openwrt-sdk-$REPO_BRANCH-armvirt-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz || curl -fL -m 60 -o sdk.tar.xz https://openwrt.tetaneutral.net/releases/21.02-SNAPSHOT/targets/armvirt/64/openwrt-sdk-21.02-SNAPSHOT-armvirt-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         fi
+        svn co https://github.com/kiddin9/OpenWrt_x86-r2s-r4s/trunk/devices/common/diy devices/common/diy
 
     - name: Free up disk space
       if: env.FREE_UP_DISK == 'true'
@@ -226,7 +227,7 @@ jobs:
         mkdir packages
         mv -f openwrt/bin/packages/*/kiddin9/* packages || true
         mv -f openwrt/.config packages/ || true
-        # mv -f openwrt/bin/targets/*/*/packages/base-files* packages/ || true
+        mv -f openwrt/bin/targets/*/*/packages/base-files* packages/ || true
         # cp -Rf openwrt/bin/packages/*/packages/python3* packages/
         echo "FIRMWARE=$PWD/packages" >> $GITHUB_ENV
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
